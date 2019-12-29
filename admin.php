@@ -1,6 +1,8 @@
 <?php
 require_once 'PHP/config.php';
 require_once 'PHP/data/categories.php';
+require_once 'PHP/data/shoes.php';
+require_once 'PHP/data/users.php';
 ?>
 
 <!DOCTYPE html>
@@ -31,8 +33,8 @@ require_once 'PHP/data/categories.php';
                 <img src="./assets/Logo.png" width="250" height="100" alt="brandLogo" class="img-fluid">
             </a>
             <button role="button" class="navbar-toggler" data-toggle="collapse" data-target="#idcollapse">
-          <span class="navbar-toggler-icon"></span>
-      </button>
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="idcollapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -50,23 +52,76 @@ require_once 'PHP/data/categories.php';
     </nav>
 
 
-    <!-- table -->
+    <!-- tables -->
 
-     <div class="container m-auto p-5 myTable">
-        <h1>Categories:</h1>
-        <table id="myTable">
-            <thead>
-                <tr>
-                    <th>Category name</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            CategoriesData::GetAllCategories();
-             ?> 
-            </tbody>
-        </table>
-    </div>
+    <!-- categories -->
+
+    <section id="categories">
+        <div class="container m-auto p-5 myTable">
+            <h1>Categories:</h1>
+            <table id="table1">
+                <thead>
+                    <tr>
+                        <th>Category name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    CategoriesData::GetAllCategories();
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+
+
+    <!-- shoes -->
+
+    <section id="shoes">
+        <div class="container m-auto p-5 myTable">
+            <h1>Shoes:</h1>
+            <table id="table2">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    ShoesData::GetAllShoes();
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- users -->
+
+    <section id="users">
+        <div class="container m-auto p-5 myTable">
+            <h1>Users:</h1>
+            <table id="table3">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    UsersData::GetAllUsers();
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
 
 
     <!-- <div class="container m-auto p-5 myTable">
