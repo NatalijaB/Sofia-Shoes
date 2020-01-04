@@ -19,30 +19,10 @@
 
 
     <!-- NAV -->
-    <nav class="navbar navbar-dark navbar-expand-md py-2" id="main-nav">
-        <div class="container">
-            <a href="#" class="navbar-brand mr-auto">
-                <img src="./assets/Logo.png" width="250" height="100" alt="brandLogo" class="img-fluid">
-            </a>
-            <button role="button" class="navbar-toggler" data-toggle="collapse" data-target="#idcollapse">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-            <div class="collapse navbar-collapse" id="idcollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Shop Now</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
+ <?php
+ require 'php/partials/header.php'
 
-        </div>
-    </nav>
+ ?>
 
 
     <!-- Main Photo -->
@@ -56,7 +36,6 @@
     <!-- Products -->
 
     <section class="container">
-        <a href="admin.php">Admin</a>
         <h1>Featured:</h1>
         <div class="row">
             <div class="col-lg-4">

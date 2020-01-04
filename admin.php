@@ -3,6 +3,10 @@ require_once 'PHP/config.php';
 require_once 'PHP/data/categories.php';
 require_once 'PHP/data/shoes.php';
 require_once 'PHP/data/users.php';
+
+if(!isset($_SESSION['username'])){
+    header("location: login.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,31 +31,12 @@ require_once 'PHP/data/users.php';
 <body>
 
 
-    <!-- NAV -->
-    <nav class="navbar navbar-dark navbar-expand-md py-2" id="main-nav">
-        <div class="container">
-            <a href="#" class="navbar-brand mr-auto">
-                <img src="./assets/Logo.png" width="250" height="100" alt="brandLogo" class="img-fluid">
-            </a>
-            <button role="button" class="navbar-toggler" data-toggle="collapse" data-target="#idcollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="idcollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Shop Now</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!-- nav -->
+<?php 
 
+require 'php/partials/header.php'
+
+?>
 
     <!-- tables -->
 
