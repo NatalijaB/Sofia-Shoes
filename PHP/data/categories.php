@@ -10,7 +10,7 @@ class CategoriesData
         $this->name = $name;
     }
 
-    //listing
+    //L I S T I N G
 
     public static function GetAllCategories()
     {
@@ -20,28 +20,27 @@ class CategoriesData
 
         $result = mysqli_query($db, $query);
         if ($result) {
+            $data = [];
             while ($row = mysqli_fetch_assoc($result)) {
-                $name = $row['Name'];
-                echo '
-                <tr>
-                <td>' . $name .'</td>
-                </tr>
-                ';
+                $data[] = $row;
             }
-        } else{
-            echo 'No result.';
+            return $data;
+        } else {
+            return [];
         }
     }
 
-    //adding
+
+
+    //A D D I N G
 
     public static function AddCategory($newCategory)
     {
         $db = Database::getInstance()->getConnection();
 
-        $name = $newCategory['Name'];
+        $name = $newCategory->Name;
 
-        $query = "INSERT INTO categories (`Name`) 
+        $query = "INSERT INTO categories (`Id`, `Name`) 
         VALUES (DEFAULT,'$name')";
 
         $result = mysqli_query($db, $query);
@@ -52,12 +51,14 @@ class CategoriesData
         }
     }
 
-    //updating
+    // U P D A T I N G
 
-    public static function UpdateCategory($id, $name)
+    public static function UpdateCategory($category)
     {
         $db = Database::getInstance()->getConnection();
- 	
+        $id = $category->Id;
+        $name = $category->Name;
+
         $query = "UPDATE categories SET Name='$name' WHERE Id='$id'";
 
         $result = mysqli_query($db, $query);

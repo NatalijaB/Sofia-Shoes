@@ -27,22 +27,13 @@ class ShoesData
 
         $result = mysqli_query($db, $query);
         if ($result) {
+            $data = [];
             while ($row = mysqli_fetch_assoc($result)) {
-                $name = $row['Name'];
-                $description = $row['Description'];
-                $price = $row['Price'];
-                $size = $row['Size'];
-                echo '
-                <tr>
-                <td>' . $name .'</td>
-                <td>' . $description .'</td>
-                <td>' . $price .'</td>
-                <td>' . $size .'</td>
-                </tr>
-                ';
+                $data[] = $row;
             }
-        } else{
-            echo 'No result.';
+            return $data;
+        } else {
+            return [];
         }
     }
 
@@ -51,16 +42,15 @@ class ShoesData
     public static function AddShoes($newShoes)
     {
         $db = Database::getInstance()->getConnection();
-        $passcode = $newShoes['Passcode'];
-        $name = $newShoes['Name'];
-        $description = $newShoes['Description'];
-        $price = $newShoes['Price'];
-        $size = $newShoes['Size'];
-        $imgUrl = $newShoes['ImgUrl'];
-        $category = $newShoes['Category'];
+        $passcode = $newShoes->Passcode;
+        $name = $newShoes->Name;
+        $description = $newShoes->Description;
+        $price = $newShoes->Price;
+        $size = $newShoes->Size;
+        $imgUrl = $newShoes->ImgUrl;
 
-        $query = "INSERT INTO shoes (`Passcode`, `Name`, `Description`, `Price`, `Size`, `ImgUrl`, `Category`) 
-        VALUES (DEFAULT,'$passcode', '$name', '$description', '$price', '$size', '$imgUrl', '$category')";
+        $query = "INSERT INTO shoes (`Id`, `Passcode`, `Name`, `Description`, `Price`, `Size`, `ImgUrl`) 
+        VALUES (DEFAULT,'$passcode', '$name', '$description', '$price', '$size', '$imgUrl')";
 
         $result = mysqli_query($db, $query);
         if ($result) {

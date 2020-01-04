@@ -48,3 +48,32 @@ section {
 section:nth-child(odd) {
     background-color: rgb(238, 229, 218);
 }
+
+
+/* form */
+
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.hideForm {
+    display: none;
+}
+
+.fa {
+    transition: all ease-in 200ms;
+    opacity: 0.8;
+}
+
+.fa:hover {
+    transform: scale(1.1);
+    opacity: 1;
+    cursor: pointer;
+}
+
+.fa-trash {
+    color: rgb(150, 18, 18);
+}

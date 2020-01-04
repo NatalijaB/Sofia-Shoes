@@ -14,13 +14,14 @@ require_once 'PHP/data/users.php';
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin Page</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="CSS/admin.css">
     <link href="https://fonts.googleapis.com/css?family=Megrim&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 
 <body>
@@ -59,18 +60,36 @@ require_once 'PHP/data/users.php';
     <section id="categories">
         <div class="container m-auto p-5 myTable">
             <h1>Categories:</h1>
-            <table id="table1">
+            <table id="catTable">
                 <thead>
                     <tr>
-                        <th>Category name</th>
+                        <th>Category Name</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    CategoriesData::GetAllCategories();
-                    ?>
+                <tbody id="catTableBody">
                 </tbody>
             </table>
+            <button role="button" class="btn btn-info catBtn" id="addCat">Add A Category</button>
+            <div class="center addCat hideForm">
+                <button id="closeAddCat" style="float: right;">X</button>
+                <form>
+                    Category Name:<br>
+                    <input type="text" id="Name" name="Name" placeholder="Write a name..">
+                    <br>
+                    <button id='addBtn' type="button" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="center updateCat hideForm">
+                <button id="closeUpdateCat" style="float: right;">X</button>
+                <form>
+                    Category Name:<br>
+                    <input type="text" id="updateName" name="updateName" placeholder="Update name...">
+                    <br>
+                    <button id='updateBtn' type="button" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -79,135 +98,74 @@ require_once 'PHP/data/users.php';
 
     <!-- shoes -->
 
+
     <section id="shoes">
         <div class="container m-auto p-5 myTable">
             <h1>Shoes:</h1>
-            <table id="table2">
+            <table id="shoesTable">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Price</th>
                         <th>Size</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    ShoesData::GetAllShoes();
-                    ?>
+                <tbody id="shoesTableBody">
                 </tbody>
             </table>
+            <button role="button" class="btn btn-info shoesBtn" id="addShoes">Add Shoes</button>
+            <div class="center addShoes hideForm">
+                <button id="closeAddShoes" style="float: right;">X</button>
+                <form>
+                    Name:<br>
+                    <input type="text" id="shoesName" name="Name" placeholder="Write a name..">
+                    <br>
+                    <input type="text" id="description" name="Description" placeholder="Write a description..">
+                    <br>
+                    <input type="number" id="price" name="Price" placeholder="Price">
+                    <br>
+                    <input type="number" id="size" name="Size" placeholder="Size">
+                    <br>
+                    <input type="text" id="passcode" name="Passcode" placeholder="Passcode">
+                    <br>
+                    <input type="text" id="imgUrl" name="ImgUrl" placeholder="Image Url">
+                    <br>
+                    <button id='addShoesBtn' type="button" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="center updateShoes hideForm">
+                <button id="closeUpdateShoes" style="float: right;">X</button>
+                <form>
+                    Name:<br>
+                    <input type="text" id="updateShoesName" name="updateName" placeholder="Update name...">
+                    <br>
+                    <input type="text" id="updateDescription" name="Description" placeholder="Update description..">
+                    <br>
+                    <input type="number" id="updatePrice" name="Price" placeholder="Price">
+                    <br>
+                    <input type="number" id="updateSize" name="Size" placeholder="Size">
+                    <br>
+                    <button id='updateShoesBtn' type="button" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     </section>
 
-    <!-- users -->
-
-    <section id="users">
-        <div class="container m-auto p-5 myTable">
-            <h1>Users:</h1>
-            <table id="table3">
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    UsersData::GetAllUsers();
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </section>
 
 
 
 
-    <!-- <div class="container m-auto p-5 myTable">
-        <h1>Categories:</h1>
-        <table id="myTable">
-            <thead>
-                <tr>
-                    <th>Class name</th>
-                    <th>Type</th>
-                    <th>Hours</th>
-                    <th>Trainer</th>
-                    <th>Spots</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Like a butterfly</td>
-                    <td>Boxing</td>
-                    <td>9:00 AM - 11:00 AM</td>
-                    <td>Aaron Chapman</td>
-                    <td>10</td>
-                </tr>
 
-                <tr>
-                    <td>Mind & Body</td>
-                    <td>Yoga</td>
-                    <td>8:00 AM - 9:00 AM</td>
-                    <td>Adam Stewart</td>
-                    <td>15</td>
-                </tr>
 
-                <tr>
-                    <td>Crit Cardio</td>
-                    <td>Gym</td>
-                    <td>9:00 AM - 10:00 AM</td>
-                    <td>Aaron Chapman</td>
-                    <td>10</td>
-                </tr>
-
-                <tr>
-                    <td>Wheel Pose Full Posture</td>
-                    <td>Yoga</td>
-                    <td>7:00 AM - 8:30 AM</td>
-                    <td>Donna Wilson</td>
-                    <td>15</td>
-                </tr>
-
-                <tr>
-                    <td>Playful Dancer's Flow</td>
-                    <td>Yoga</td>
-                    <td>8:00 AM - 9:00 AM</td>
-                    <td>Donna Wilson</td>
-                    <td>10</td>
-                </tr>
-
-                <tr>
-                    <td>Zumba Dance</td>
-                    <td>Dance</td>
-                    <td>5:00 PM - 7:00 PM</td>
-                    <td>Donna Wilson</td>
-                    <td>20</td>
-                </tr>
-
-                <tr>
-                    <td>Cardio Blast</td>
-                    <td>Gym</td>
-                    <td>5:00 PM - 7:00 PM</td>
-                    <td>Randy Porter</td>
-                    <td>10</td>
-                </tr>
-
-                <tr>
-                    <td>Pilates Reformer</td>
-                    <td>Gym</td>
-                    <td>8:00 AM - 9:00 AM</td>
-                    <td>Randy Porter</td>
-                    <td>10</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>  -->
+    
 
 
 
-
-    <script src="JS/admin.js"></script>
+    <script src="JS/categories.js"></script>
+    <script src="JS/shoes.js"></script>
 </body>
 
 </html>
