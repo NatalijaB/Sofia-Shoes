@@ -37,6 +37,26 @@ class ShoesData
         }
     }
 
+    // list one 
+    public static function GetShoes($id)
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $query = "SELECT * FROM shoes WHERE Id='$id'";
+
+        $result = mysqli_query($db, $query);
+        if ($result) {
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+            return $data;
+        } else {
+            return [];
+        }
+    }
+
+
     //adding
 
     public static function AddShoes($newShoes)

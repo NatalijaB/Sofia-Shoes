@@ -30,6 +30,26 @@ class CategoriesData
         }
     }
 
+    // L I S T   O N E   C A T E G O R Y 
+
+    public static function GetCategory($id)
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $query = "SELECT * FROM categories WHERE Id='$id'";
+
+        $result = mysqli_query($db, $query);
+        if ($result) {
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+            return $data;
+        } else {
+            return [];
+        }
+    }
+
 
 
     //A D D I N G
@@ -68,4 +88,7 @@ class CategoriesData
             return false;
         }
     }
+
+
+
 }

@@ -66,47 +66,43 @@ if (!in_array($method, $supported_methods)) {
                             $response->status = 200;
                         } else {
 
-                            // if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
+                            if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
 
-                            //     $id = intval($url_parts[2]);
+                                $id = intval($url_parts[2]);
 
-                            //     if ($id > 0) {
-                            //         $category = CategoriesData::GetCategory($id);
-                            //         if ($category == NULL) {
-                            //             $response->status = 404;
-                            //             $response->data = NULL;
-                            //         } else {
-                            //             $response->data = $category;
-                            //             $response->status = 200;
-                            //         }
-                            //     } else {
-                            //         $response->status = 400;
-                            //         $response->data = NULL;
-                            //     }
-                            // }
-                            //  else {
-                            //         if ($url_parts_counter == 2 and $url_parts[1] == "watchlist") {
+                                if ($id > 0) {
+                                    $category = CategoriesData::GetCategory($id);
+                                    if ($category == NULL) {
+                                        $response->status = 404;
+                                        $response->data = NULL;
+                                    } else {
+                                        $response->data = $category;
+                                        $response->status = 200;
+                                    }
+                                } else {
+                                    $response->status = 400;
+                                    $response->data = NULL;
+                                }
+                            } else{
+                                if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
 
-                            //             $id = intval($url_parts[2]);
-                            //             if ($id > 0) {
-                            //                 $userWatchlist = WatchlistData::CreateWatchlist($id);
-
-                            //                 if ($userWatchlist == NULL) {
-                            //                     $response->status = 404;
-                            //                     $response->data = NULL;
-                            //                 } else {
-                            //                     $response->data = $userWatchlist;
-                            //                     $response->status = 200;
-                            //                 }
-                            //             } else {
-                            //                 $response->status = 400;
-                            //                 $response->data = NULL;
-                            //             }
-                            //         } else {
-                            //             $response->status = 400;
-                            //             $response->data = NULL;
-                            //         }
-                            //     }
+                                    $id = intval($url_parts[2]);
+    
+                                    if ($id > 0) {
+                                        $category = ShoesData::GetShoes($id);
+                                        if ($category == NULL) {
+                                            $response->status = 404;
+                                            $response->data = NULL;
+                                        } else {
+                                            $response->data = $category;
+                                            $response->status = 200;
+                                        }
+                                    } else {
+                                        $response->status = 400;
+                                        $response->data = NULL;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

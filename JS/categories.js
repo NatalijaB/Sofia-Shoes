@@ -1,42 +1,22 @@
-
-function createCat(name, id) {
-    let category =
-        `
-        <tr>
-        <td>${name}</td>
-        <td><i data-id="${id}" class="fa fa-edit fa-2x cat-edit"></i></td>
-        <td><i data-id="${id}" class="fa fa-trash fa-2x cat-del"></i></td>
-        </tr>
-        `
-    return category;
-}
+const urlCat = '/sofia-shoes/categories/';
 $(document).ready(function () {
 
     // L I S T I N G
-    $.ajax({
-        url: '/sofia-shoes/categories',
-        success: function (resp) {
-            let categories = resp;
-            categories.forEach(e => {
-                let tableContent = createCat(e.Name, e.Id);
-                $('#catTableBody').append(tableContent);
-            });
-            $('#catTable').DataTable();
-        }
-    });
 
+    ajaxGetAllCat();
 
     // FORM DISPLAY (srediti)
 
-    $('#addCat').click(()=>{
+    $('#addCat').click(() => {
         $('.addCat').show();
     })
 
-    $('#closeAddCat').click(()=>{
+    $('#closeAddCat').click(() => {
         $('.addCat').hide();
     });
 
-    $('#closeUpdateCat').click(()=>{
+    $('#closeUpdateCat').click(() => {
+        localStorage.clear();
         $('.updateCat').hide();
     })
 
@@ -46,32 +26,43 @@ $(document).ready(function () {
 
     $('#addBtn').click(() => {
         let serverUrl = '/sofia-shoes/categories';
-        let name = $('#Name');
+        let name = $('#name');
         let data = {
             'Name': name.val().trim(),
         };
-        ajaxCall(serverUrl, data);
+        ajaxPostCat(serverUrl, data);
+        $('.addCat').hide();
     });
 
 
     // U P D A T I N G
 
+
+    let catId;
     $(document).on('click', '.cat-edit', function () {
-        let id = this.dataset.id;
+
+        window.localStorage.setItem('catId', this.dataset.id);
+
+        catId = window.localStorage.getItem('catId');
+        ajaxGetCat(catId);
+
         $('.updateCat').show();
-
-
-        $('#updateBtn').click(()=>{
-            let serverUrl = '/sofia-shoes/categories/' + id;
-            let updateName = $('#updateName');
-            let data = {
-                'Name': updateName.val().trim(),
-                'Id' : id
-            };
-            ajaxCall(serverUrl, data);
-            console.log(data)
-        })
     });
+
+    $('#updateBtn').click(() => {
+        
+        catId = window.localStorage.getItem('catId');
+        let serverUrl = urlCat + catId;
+        let updateName = $('#updateName');
+        let data = {
+            'Name': updateName.val().trim(),
+            'Id': catId
+        };
+        ajaxPostCat(serverUrl, data);
+        $('.updateCat').hide();
+    })
+
+
 
 });
 
@@ -80,7 +71,7 @@ $(document).ready(function () {
 // functions
 
 
-function ajaxCall (url, data){
+function ajaxPostCat(url, data) {
 
     $.ajax({
         type: 'POST',
@@ -95,4 +86,45 @@ function ajaxCall (url, data){
             console.log(e);
         }
     });
+}
+
+
+function ajaxGetCat(id) {
+
+    $.ajax({
+        url: '/sofia-shoes/categories/' + id,
+        success: (resp) => {
+            console.log(resp)
+            name = resp[0].Name;
+            $('#updateName').val(name);
+        }
+    })
+}
+
+
+function ajaxGetAllCat() {
+    $.ajax({
+        url: '/sofia-shoes/categories',
+        success: (resp) => {
+            let categories = resp;
+            categories.forEach(e => {
+                let tableContent = createCat(e.Name, e.Id);
+                $('#catTableBody').append(tableContent);
+            });
+            $('#catTable').DataTable();
+        }
+    });
+}
+
+
+function createCat(name, id) {
+    let category =
+        `
+        <tr>
+        <td>${name}</td>
+        <td><i data-id="${id}" class="fa fa-edit fa-2x cat-edit"></i></td>
+        <td><i data-id="${id}" class="fa fa-trash fa-2x cat-del"></i></td>
+        </tr>
+        `
+    return category;
 }

@@ -4,7 +4,7 @@ require_once 'PHP/data/categories.php';
 require_once 'PHP/data/shoes.php';
 require_once 'PHP/data/users.php';
 
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
     header("location: login.php");
 }
 ?>
@@ -31,16 +31,16 @@ if(!isset($_SESSION['username'])){
 <body>
 
 
-<!-- nav -->
-<?php 
+    <!-- nav -->
+    <?php
 
-require 'php/partials/header.php'
+    require 'php/partials/header.php'
 
-?>
+    ?>
 
     <!-- tables -->
 
-    <!-- categories -->
+    <!-- categories table -->
 
     <section id="categories">
         <div class="container m-auto p-5 myTable">
@@ -57,27 +57,45 @@ require 'php/partials/header.php'
                 </tbody>
             </table>
             <button role="button" class="btn btn-info catBtn" id="addCat">Add A Category</button>
-            <div class="center addCat hideForm">
-                <button id="closeAddCat" style="float: right;">X</button>
-                <form>
-                    Category Name:<br>
-                    <input type="text" id="Name" name="Name" placeholder="Write a name..">
-                    <br>
-                    <button id='addBtn' type="button" class="btn btn-primary">Submit</button>
-                </form>
+
+            <!-- popup add form -->
+
+            <div class="modal addCat hideForm">
+                <div class="modal-content">
+                    <button type="button" class="close" aria-label="Close" id="closeAddCat">
+                        <span aria-hidden="true">&#10006;</span>
+                    </button>
+                    <form>
+                        <h2>Add Category:</h2>
+                        <div class="form-group">
+                            <label for="name">Category name:</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Write a name...">
+                        </div>
+                        <button id='addBtn' type="button" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
             </div>
-            <div class="center updateCat hideForm">
-                <button id="closeUpdateCat" style="float: right;">X</button>
-                <form>
-                    Category Name:<br>
-                    <input type="text" id="updateName" name="updateName" placeholder="Update name...">
-                    <br>
-                    <button id='updateBtn' type="button" class="btn btn-primary">Submit</button>
-                </form>
+
+
+            <!-- popup update form -->
+
+            <div class="modal updateCat hideForm">
+                <div class="modal-content">
+                    <button type="button" class="close" aria-label="Close" id="closeUpdateCat">
+                        <span aria-hidden="true">&#10006;</span>
+                    </button>
+                    <form>
+                        <h2>Update Category:</h2>
+                        <div class="form-group">
+                            <label for="updateName">Category name:</label>
+                            <input type="text" class="form-control" id="updateName" name="updateName">
+                        </div>
+                        <button id='updateBtn' type="button" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
-
 
 
 
@@ -102,50 +120,80 @@ require 'php/partials/header.php'
                 </tbody>
             </table>
             <button role="button" class="btn btn-info shoesBtn" id="addShoes">Add Shoes</button>
-            <div class="center addShoes hideForm">
-                <button id="closeAddShoes" style="float: right;">X</button>
-                <form>
-                    Name:<br>
-                    <input type="text" id="shoesName" name="Name" placeholder="Write a name..">
-                    <br>
-                    <input type="text" id="description" name="Description" placeholder="Write a description..">
-                    <br>
-                    <input type="number" id="price" name="Price" placeholder="Price">
-                    <br>
-                    <input type="number" id="size" name="Size" placeholder="Size">
-                    <br>
-                    <input type="text" id="passcode" name="Passcode" placeholder="Passcode">
-                    <br>
-                    <input type="text" id="imgUrl" name="ImgUrl" placeholder="Image Url">
-                    <br>
-                    <button id='addShoesBtn' type="button" class="btn btn-primary">Submit</button>
-                </form>
+            <div class="modal addShoes hideForm">
+                <div class="modal-content">
+
+                    <button type="button" class="close" aria-label="Close" id="closeAddShoes">
+                        <span aria-hidden="true">&#10006;</span>
+                    </button>
+                    <form>
+                        <h2>Add Shoes:</h2>
+                        <div class="form-group">
+                            <label for="shoesName">Name:</label>
+                            <input class="form-control" type="text" id="shoesName" name="Name" placeholder="Write a name..">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <input class="form-control" type="text" id="description" name="Description" placeholder="Write a description..">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price:</label>
+                            <input class="form-control" type="number" id="price" name="Price" placeholder="Price">
+                        </div>
+                        <div class="form-group">
+                            <label for="size">Size:</label>
+                            <input class="form-control" type="number" id="size" name="Size" placeholder="Size">
+                        </div>
+                        <div class="form-group">
+                            <label for="passcode">Passcode</label>
+                            <input class="form-control" type="password" id="passcode" name="Passcode" placeholder="Passcode">
+                        </div>
+                        <div class="form-group">
+                            <label for="imgUrl">Image Url:</label>
+                            <input class="form-control" type="text" id="imgUrl" name="ImgUrl" placeholder="Image Url">
+                        </div>
+                        <button id='addShoesBtn' type="button" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
             </div>
-            <div class="center updateShoes hideForm">
-                <button id="closeUpdateShoes" style="float: right;">X</button>
-                <form>
-                    Name:<br>
-                    <input type="text" id="updateShoesName" name="updateName" placeholder="Update name...">
-                    <br>
-                    <input type="text" id="updateDescription" name="Description" placeholder="Update description..">
-                    <br>
-                    <input type="number" id="updatePrice" name="Price" placeholder="Price">
-                    <br>
-                    <input type="number" id="updateSize" name="Size" placeholder="Size">
-                    <br>
-                    <button id='updateShoesBtn' type="button" class="btn btn-primary">Submit</button>
-                </form>
+            <div class="modal updateShoes hideForm">
+                <div class="modal-content">
+                    <button type="button" class="close" aria-label="Close" id="closeUpdateShoes">
+                        <span aria-hidden="true">&#10006;</span>
+                    </button>
+                    <form>
+                        <h2>Update Shoes:</h2>
+                        <div class="form-group">
+                            <label for="updateShoesName">Name:</label>
+                            <input class="form-control" type="text" id="updateShoesName" name="updateShoesName">
+                        </div>
+                        <div class="form-group">
+                            <label for="updateDescription">Description:</label>
+                            <input class="form-control" type="text" id="updateDescription" name="updateDescription">
+                        </div>
+                        <div class="form-group">
+                            <label for="updatePrice">Price:</label>
+                            <input class="form-control" type="number" id="updatePrice" name="updatePrice">
+                        </div>
+                        <div class="form-group">
+                            <label for="updateSize">Size:</label>
+                            <input class="form-control" type="number" id="updateSize" name="updateSize">
+                        </div>
+                        <div class="form-group">
+                            <label for="updatePasscode">Passcode:</label>
+                            <input class="form-control" type="password" id="updatePasscode" name="updatePasscode">
+                        </div>
+                        <div class="form-group">
+                            <label for="updateImgUrl">Image Url:</label>
+                            <input class="form-control" type="text" id="updateImgUrl" name="updateImgUrl">
+                        </div>
+                        <button id='updateShoesBtn' type="button" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
-
-
-
-
-
-
-    
 
 
 

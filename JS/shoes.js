@@ -1,18 +1,5 @@
+const urlShoes = '/sofia-shoes/shoes/'
 
-function createShoes(name, description, price, size, id) {
-    let shoes =
-        `
-        <tr>
-        <td>${name}</td>
-        <td>${description}</td>
-        <td>${price}</td>
-        <td>${size}</td>
-        <td><i data-id="${id}" class="fa fa-edit fa-2x shoes-edit"></i></td>
-        <td><i data-id="${id}" class="fa fa-trash fa-2x shoes-del"></i></td>
-        </tr>
-        `
-    return shoes;
-}
 $(document).ready(function () {
 
     // L I S T I N G
@@ -63,20 +50,24 @@ $(document).ready(function () {
             'Passcode': passcode.val().trim(),
             'ImgUrl': imgUrl.val().trim(),
         };
-        ajaxCall(serverUrl, data);
+        ajaxPostShoes(serverUrl, data);
         console.log(data);
     });
 
 
     // U P D A T I N G
-
+    let shoesId;
     $(document).on('click', '.shoes-edit', function () {
-        let id = this.dataset.id;
+        
+        window.localStorage.setItem('shoesId', this.dataset.id);
+        shoesId = window.localStorage.getItem('shoesId');
+        ajaxGetShoes(shoesId);
         $('.updateShoes').show();
 
 
         $('#updateShoesBtn').click(()=>{
-            let serverUrl = '/sofia-shoes/shoes/' + id;
+            shoesId = window.localStorage.getItem('shoesId');
+            let serverUrl = urlShoes + shoesId;
             let updateName = $('#updateName');
             let updateDescription = $('#updateDescription');
             let updatePrice = $('#updatePrice');
@@ -87,7 +78,7 @@ $(document).ready(function () {
                 'Price': updatePrice.val().trim(),
                 'Size': updateSize.val().trim(),
             };
-            ajaxCall(serverUrl, data);
+            ajaxPostShoes(serverUrl, data);
             console.log(data)
         })
     });
@@ -99,7 +90,7 @@ $(document).ready(function () {
 // functions
 
 
-function ajaxCall (url, data){
+function ajaxPostShoes (url, data){
 
     $.ajax({
         type: 'POST',
@@ -114,4 +105,45 @@ function ajaxCall (url, data){
             console.log(e);
         }
     });
+}
+
+
+function ajaxGetShoes (id){
+
+    $.ajax({
+        url: urlShoes + id,
+        success: ( resp )=>{
+            
+            name = resp[0].Name;
+            description = resp[0].Description;
+            price = resp[0].Price;
+            size = resp[0].Size;
+            passcode = resp[0].Passcode;
+            imgUrl = resp[0].ImgUrl;
+
+
+            $('#updateShoesName').val(name);
+            $('#updateDescription').val(description);
+            $('#updatePrice').val(price);
+            $('#updateSize').val(size);
+            $('#updatePasscode').val(passcode);
+            $('#updateImgUrl').val(imgUrl);
+        }
+    })
+}
+
+
+function createShoes(name, description, price, size, id) {
+    let shoes =
+        `
+        <tr>
+        <td>${name}</td>
+        <td>${description}</td>
+        <td>${price}</td>
+        <td>${size}</td>
+        <td><i data-id="${id}" class="fa fa-edit fa-2x shoes-edit"></i></td>
+        <td><i data-id="${id}" class="fa fa-trash fa-2x shoes-del"></i></td>
+        </tr>
+        `
+    return shoes;
 }
