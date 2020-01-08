@@ -31,7 +31,8 @@ nav {
 }
 
 h1,
-h2 {
+h2,
+h4 {
     text-align: center;
     color: rgba(244, 123, 101, 0.83);
 }
@@ -43,13 +44,6 @@ section {
 
 section:nth-child(odd) {
     background-color: rgb(238, 229, 218);
-}
-
-
-/* form */
-
-.hideForm {
-    display: none;
 }
 
 .fa {
@@ -92,4 +86,12 @@ section:nth-child(odd) {
 
 .modal-content span {
     float: right;
+}
+
+#delBtn {
+    width: 50%;
+    margin: auto;
+    background-color: rgb(150, 18, 18);
+    border: none;
+    font-size: 1.3em;
 }

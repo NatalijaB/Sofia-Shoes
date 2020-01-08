@@ -1,23 +1,23 @@
-const urlCat = '/sofia-shoes/categories/';
-$(document).ready(function () {
+const urlCat = '/sofia-shoes/categories';
+$(document).ready( ()=> {
 
     // L I S T I N G
 
     ajaxGetAllCat();
 
     // FORM DISPLAY (srediti)
-
-    $('#addCat').click(() => {
+    $('#addCat').click(()=>{
         $('.addCat').show();
     })
-
     $('#closeAddCat').click(() => {
         $('.addCat').hide();
     });
 
     $('#closeUpdateCat').click(() => {
-        localStorage.clear();
         $('.updateCat').hide();
+    })
+    $('#closeDelCat').click(() => {
+        $('.delCat').hide();
     })
 
 
@@ -25,10 +25,10 @@ $(document).ready(function () {
     // A D D I N G 
 
     $('#addBtn').click(() => {
-        let serverUrl = '/sofia-shoes/categories';
+        let serverUrl = urlCat;
         let name = $('#name');
         let data = {
-            'Name': name.val().trim(),
+            'CatName': name.val().trim(),
         };
         ajaxPostCat(serverUrl, data);
         $('.addCat').hide();
@@ -42,7 +42,6 @@ $(document).ready(function () {
     $(document).on('click', '.cat-edit', function () {
 
         window.localStorage.setItem('catId', this.dataset.id);
-
         catId = window.localStorage.getItem('catId');
         ajaxGetCat(catId);
 
@@ -52,14 +51,32 @@ $(document).ready(function () {
     $('#updateBtn').click(() => {
         
         catId = window.localStorage.getItem('catId');
-        let serverUrl = urlCat + catId;
+        let serverUrl = `${urlCat}/${catId}`;
         let updateName = $('#updateName');
         let data = {
-            'Name': updateName.val().trim(),
-            'Id': catId
+            'CatName': updateName.val().trim(),
+            'CatId': catId
         };
         ajaxPostCat(serverUrl, data);
         $('.updateCat').hide();
+    })
+
+
+    // D E L E T I N G 
+
+    $(document).on('click', '.cat-del', function () {
+
+        window.localStorage.setItem('catId', this.dataset.id);
+        catId = window.localStorage.getItem('catId');
+        $('.delCat').show();
+    });
+
+    $('#delBtn').click(() => {
+        
+        catId = window.localStorage.getItem('catId');
+        let serverUrl = `${urlCat}/${catId}`;
+        ajaxDelCat(serverUrl);
+        $('.delCat').hide();
     })
 
 
@@ -79,10 +96,10 @@ function ajaxPostCat(url, data) {
         data: JSON.stringify(data),
         dataType: "application/json",
         contentType: "application/json; charset=utf-8",
-        success: function (serverResponse) {
-            console.log(serverResponse);
+        success: (resp) => {
+            console.log(resp);
         },
-        error: function (e) {
+        error:(e) => {
             console.log(e);
         }
     });
@@ -92,10 +109,10 @@ function ajaxPostCat(url, data) {
 function ajaxGetCat(id) {
 
     $.ajax({
-        url: '/sofia-shoes/categories/' + id,
+        url: `${urlCat}/${catId}`,
         success: (resp) => {
             console.log(resp)
-            name = resp[0].Name;
+            name = resp[0].CatName;
             $('#updateName').val(name);
         }
     })
@@ -104,16 +121,31 @@ function ajaxGetCat(id) {
 
 function ajaxGetAllCat() {
     $.ajax({
-        url: '/sofia-shoes/categories',
+        url: urlCat,
         success: (resp) => {
             let categories = resp;
             categories.forEach(e => {
-                let tableContent = createCat(e.Name, e.Id);
+                let tableContent = createCat(e.CatName, e.CatId);
                 $('#catTableBody').append(tableContent);
+                $('#updateCatOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
+                $('#catOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
             });
             $('#catTable').DataTable();
         }
     });
+}
+
+function ajaxDelCat (url){
+    $.ajax({
+        type:"DELETE",
+        url: url,
+        success: (resp)=>{
+            console.log(resp);
+        },
+        error: (e)=>{
+            console.log(e)
+        }
+    })
 }
 
 

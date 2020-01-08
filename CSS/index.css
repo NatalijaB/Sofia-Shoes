@@ -77,6 +77,6 @@ h1 {
     cursor: pointer;
 }
 
-#price {
+span {
     font-weight: bold;
 }

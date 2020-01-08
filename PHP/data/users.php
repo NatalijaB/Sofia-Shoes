@@ -23,7 +23,7 @@ class UsersData
     public static function GetAllUsers()
     {
         $db = Database::getInstance()->getConnection();
-        $query = "SELECT * FROM users_data";
+        $query = "SELECT * FROM users WHERE isDeleted='0'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -37,6 +37,26 @@ class UsersData
         }
     }
 
+    // list one
+    public static function GetUser($id)
+    {
+        $db = Database::getInstance()->getConnection();
+        $query = "SELECT * FROM users WHERE UsersId='$id'";
+
+        $result = mysqli_query($db, $query);
+        if ($result) {
+            $userData = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $userData[] = $row;
+            }
+            return $userData;
+        } else {
+            return [];
+        }
+    }
+
+
+
     //adding
 
     public static function AddUser($newUser)
@@ -49,7 +69,7 @@ class UsersData
         $username = $newUser->Username;
         $password = $newUser->password;
 
-        $query = "INSERT INTO users (`Id`, `FirstName`, `LastName`, `email`, `Username`, `password`) 
+        $query = "INSERT INTO users (`UsersId`, `FirstName`, `LastName`, `email`, `Username`, `password`) 
         VALUES (DEFAULT,'$fname', '$lname', '$email', '$username' '$password')";
 
         $result = mysqli_query($db, $query);
@@ -73,7 +93,7 @@ class UsersData
         $password = $updateUser->Password;
         $username = $updateUser->Username;
 
-        $query = "UPDATE users SET FirstName='$fname', LastName='$lname', email='$email', Username='$username', Password='$password', WHERE Id='$id'";
+        $query = "UPDATE users SET FirstName='$fname', LastName='$lname', email='$email', Username='$username', Password='$password', WHERE UsersId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -88,11 +108,11 @@ class UsersData
     // deleting
 
 
-    public static function DeleteUser($userId)
+    public static function DeleteUser($id)
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "DELETE FROM users_data WHERE UserId='$userId'";
+        $query = "UPDATE users SET isDeleted='1' WHERE UsersId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {

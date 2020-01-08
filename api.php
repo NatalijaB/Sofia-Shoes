@@ -83,23 +83,42 @@ if (!in_array($method, $supported_methods)) {
                                     $response->status = 400;
                                     $response->data = NULL;
                                 }
-                            } else{
+                            } else {
                                 if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
 
                                     $id = intval($url_parts[2]);
-    
+
                                     if ($id > 0) {
-                                        $category = ShoesData::GetShoes($id);
-                                        if ($category == NULL) {
+                                        $shoes = ShoesData::GetShoes($id);
+                                        if ($shoes == NULL) {
                                             $response->status = 404;
                                             $response->data = NULL;
                                         } else {
-                                            $response->data = $category;
+                                            $response->data = $shoes;
                                             $response->status = 200;
                                         }
                                     } else {
                                         $response->status = 400;
                                         $response->data = NULL;
+                                    }
+                                } else {
+                                    if ($url_parts_counter == 2 and $url_parts[1] == "users") {
+
+                                        $id = intval($url_parts[2]);
+
+                                        if ($id > 0) {
+                                            $user = USersData::GetUser($id);
+                                            if ($user == NULL) {
+                                                $response->status = 404;
+                                                $response->data = NULL;
+                                            } else {
+                                                $response->data = $user;
+                                                $response->status = 200;
+                                            }
+                                        } else {
+                                            $response->status = 400;
+                                            $response->data = NULL;
+                                        }
                                     }
                                 }
                             }
@@ -113,7 +132,7 @@ if (!in_array($method, $supported_methods)) {
 
                     $data = json_decode(file_get_contents("php://input"));
 
-                    if (!isset($data->Name)) {
+                    if (!isset($data->CatName)) {
                         $response->status = 400;
                         $response->data = NULL;
                     } else {
@@ -132,7 +151,7 @@ if (!in_array($method, $supported_methods)) {
 
                         $data = json_decode(file_get_contents("php://input"));
 
-                        if (!isset($data->Name) and !isset($data->Passcode) and !isset($data->Description) and !isset($data->Price) and !isset($data->Size) and !isset($data->ImgUrl)) {
+                        if (!isset($data->ShoesName) and !isset($data->Passcode) and !isset($data->Description) and !isset($data->Price) and !isset($data->Size) and !isset($data->ImgUrl) and !isset($data->Category)) {
                             $response->status = 400;
                             $response->data = NULL;
                         } else {
@@ -151,7 +170,7 @@ if (!in_array($method, $supported_methods)) {
 
                             $data = json_decode(file_get_contents("php://input"));
 
-                            if (!isset($data->Id) and !isset($data->Name)) {
+                            if (!isset($data->CatId) and !isset($data->CatName)) {
                                 $response->status = 400;
                                 $response->data = NULL;
                             } else {
@@ -166,13 +185,82 @@ if (!in_array($method, $supported_methods)) {
                                 }
                             }
                         } else {
-                            $response->status = 400;
-                            $response->data = NULL;
+                            if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
+
+                                $data = json_decode(file_get_contents("php://input"));
+
+                                if (!isset($data->ShoesId) and !isset($data->ShoesName) and !isset($data->Price) and !isset($data->Description) and !isset($data->Size) and !isset($data->Passcode) and !isset($data->ImgUrl) and !isset($data->Category)) {
+                                    $response->status = 400;
+                                    $response->data = NULL;
+                                } else {
+                                    $id = ShoesData::UpdateShoes($data);
+
+                                    if ($id == -1) {
+                                        $response->status = 400;
+                                        $response->data = NULL;
+                                    } else {
+                                        $response->data = $id;
+                                        $response->status = 201;
+                                    }
+                                }
+                            } else {
+                                $response->status = 400;
+                                $response->data = NULL;
+                            }
                         }
                     }
-
-                    break;
                 }
+                break;
+
+            case "DELETE":
+                if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
+
+
+                    $id = intval($url_parts[2]);
+
+                    $isDeleted = CategoriesData::DeleteCategory($id);
+
+                    if ($id == -1) {
+                        $response->status = 400;
+                        $response->data = NULL;
+                    } else {
+                        $response->data = $isDeleted;
+                        $response->status = 201;
+                    }
+                } else {
+                    if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
+
+
+                        $id = intval($url_parts[2]);
+
+                        $isDeleted = ShoesData::DeleteShoes($id);
+
+                        if ($id == -1) {
+                            $response->status = 400;
+                            $response->data = NULL;
+                        } else {
+                            $response->data = $isDeleted;
+                            $response->status = 201;
+                        }
+                    } else {
+                        if ($url_parts_counter == 2 and $url_parts[1] == "users") {
+
+
+                            $id = intval($url_parts[2]);
+
+                            $isDeleted = UsersData::DeleteUser($id);
+
+                            if ($id == -1) {
+                                $response->status = 400;
+                                $response->data = NULL;
+                            } else {
+                                $response->data = $isDeleted;
+                                $response->status = 201;
+                            }
+                        }
+                    }
+                }
+                break;
         }
     } catch (PDOException $e) {
         $response->status = 500;

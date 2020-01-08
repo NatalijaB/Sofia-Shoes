@@ -1,32 +1,22 @@
-const urlShoes = '/sofia-shoes/shoes/'
+const urlShoes = '/sofia-shoes/shoes'
 
-$(document).ready(function () {
+$(document).ready(() => {
 
     // L I S T I N G
-    $.ajax({
-        url: '/sofia-shoes/shoes',
-        success: function (resp) {
-            let shoes = resp;
-            shoes.forEach(e => {
-                let tableContent = createShoes(e.Name, e.Description, e.Price, e.Size, e.Id);
-                $('#shoesTableBody').append(tableContent);
-            });
-            $('#shoesTable').DataTable();
-        }
-    });
+    ajaxGetAllShoes();
 
 
     // FORM DISPLAY (srediti)
 
-    $('#addShoes').click(()=>{
+    $('#addShoes').click(() => {
         $('.addShoes').show();
     })
 
-    $('#closeAddShoes').click(()=>{
+    $('#closeAddShoes').click(() => {
         $('.addShoes').hide();
     });
 
-    $('#closeUpdateShoes').click(()=>{
+    $('#closeUpdateShoes').click(() => {
         $('.updateShoes').hide();
     })
 
@@ -35,53 +25,80 @@ $(document).ready(function () {
     // A D D I N G 
 
     $('#addShoesBtn').click(() => {
-        let serverUrl = '/sofia-shoes/shoes';
         let name = $('#shoesName');
         let description = $('#description');
         let price = $('#price');
         let size = $('#size');
         let passcode = $('#passcode');
         let imgUrl = $('#imgUrl');
+        let category = $('#catOptions :selected');
         let data = {
-            'Name': name.val().trim(),
+            'ShoesName': name.val().trim(),
             'Description': description.val().trim(),
             'Price': price.val().trim(),
             'Size': size.val().trim(),
             'Passcode': passcode.val().trim(),
             'ImgUrl': imgUrl.val().trim(),
+            'Category': category.val(),
         };
-        ajaxPostShoes(serverUrl, data);
+        ajaxPostShoes(urlShoes, data);
         console.log(data);
+        $('.addShoes').hide();
     });
 
 
     // U P D A T I N G
     let shoesId;
     $(document).on('click', '.shoes-edit', function () {
-        
+
         window.localStorage.setItem('shoesId', this.dataset.id);
         shoesId = window.localStorage.getItem('shoesId');
         ajaxGetShoes(shoesId);
         $('.updateShoes').show();
 
 
-        $('#updateShoesBtn').click(()=>{
+        $('#updateShoesBtn').click(() => {
             shoesId = window.localStorage.getItem('shoesId');
-            let serverUrl = urlShoes + shoesId;
-            let updateName = $('#updateName');
+            let serverUrl = `${urlShoes}/${shoesId}`;
+
+            let updateShoesName = $('#updateShoesName');
             let updateDescription = $('#updateDescription');
             let updatePrice = $('#updatePrice');
             let updateSize = $('#updateSize');
+            let updatePasscode = $('#updatePasscode');
+            let updateImgUrl = $('#updateImgUrl');
+            let updateCategory = $('#updateCatOptions :selected');
             let data = {
-                'Name': updateName.val().trim(),
+                'ShoesId': shoesId,
+                'ShoesName': updateShoesName.val().trim(),
                 'Description': updateDescription.val().trim(),
                 'Price': updatePrice.val().trim(),
                 'Size': updateSize.val().trim(),
+                'Passcode': updatePasscode.val().trim(),
+                'ImgUrl': updateImgUrl.val().trim(),
+                'Category': updateCategory.val(),
             };
             ajaxPostShoes(serverUrl, data);
             console.log(data)
+            $('.updateShoes').hide();
         })
     });
+
+    //D E L E T I N G 
+
+    $(document).on('click', '.shoes-del', function () {
+
+        window.localStorage.setItem('shoesId', this.dataset.id);
+        shoesId = window.localStorage.getItem('shoesId');
+        $('.delShoes').show();
+    });
+
+    $('#delShoesBtn').click(() => {
+        shoesId = window.localStorage.getItem('shoesId');
+        let serverUrl = `${urlShoes}/${shoesId}`;
+        ajaxDelShoes(serverUrl);
+        $('.delShoes').hide();
+    })
 
 });
 
@@ -90,7 +107,7 @@ $(document).ready(function () {
 // functions
 
 
-function ajaxPostShoes (url, data){
+function ajaxPostShoes(url, data) {
 
     $.ajax({
         type: 'POST',
@@ -106,21 +123,32 @@ function ajaxPostShoes (url, data){
         }
     });
 }
+function ajaxGetAllShoes() {
+    $.ajax({
+        url: urlShoes,
+        success: function (resp) {
+            let shoes = resp;
+            shoes.forEach(e => {
+                let tableContent = createShoes(e.ShoesName, e.Description, e.Price, e.Size, e.CategoryName, e.ShoesId);
+                $('#shoesTableBody').append(tableContent);
+            });
+            $('#shoesTable').DataTable();
+        }
+    });
+}
 
-
-function ajaxGetShoes (id){
+function ajaxGetShoes(id) {
 
     $.ajax({
-        url: urlShoes + id,
-        success: ( resp )=>{
-            
-            name = resp[0].Name;
+        url: `${urlShoes}/${id}`,
+        success: (resp) => {
+
+            name = resp[0].ShoesName;
             description = resp[0].Description;
             price = resp[0].Price;
             size = resp[0].Size;
             passcode = resp[0].Passcode;
             imgUrl = resp[0].ImgUrl;
-
 
             $('#updateShoesName').val(name);
             $('#updateDescription').val(description);
@@ -132,8 +160,21 @@ function ajaxGetShoes (id){
     })
 }
 
+function ajaxDelShoes(url) {
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        success: (resp) => {
+            console.log(resp);
+        },
+        error: (e) => {
+            console.log(e)
+        }
+    })
+}
 
-function createShoes(name, description, price, size, id) {
+
+function createShoes(name, description, price, size, categoryName, id) {
     let shoes =
         `
         <tr>
@@ -141,6 +182,7 @@ function createShoes(name, description, price, size, id) {
         <td>${description}</td>
         <td>${price}</td>
         <td>${size}</td>
+        <td>${categoryName}</td>
         <td><i data-id="${id}" class="fa fa-edit fa-2x shoes-edit"></i></td>
         <td><i data-id="${id}" class="fa fa-trash fa-2x shoes-del"></i></td>
         </tr>

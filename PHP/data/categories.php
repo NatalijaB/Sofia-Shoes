@@ -16,7 +16,7 @@ class CategoriesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "SELECT * FROM categories";
+        $query = "SELECT * FROM categories WHERE isDeleted='0'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -30,13 +30,13 @@ class CategoriesData
         }
     }
 
-    // L I S T   O N E   C A T E G O R Y 
+    // L I S T I N G  O N E   C A T E G O R Y 
 
     public static function GetCategory($id)
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "SELECT * FROM categories WHERE Id='$id'";
+        $query = "SELECT * FROM categories WHERE CatId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -59,9 +59,10 @@ class CategoriesData
         $db = Database::getInstance()->getConnection();
 
         $name = $newCategory->Name;
+        $userid = $newCategory->UserId;
 
-        $query = "INSERT INTO categories (`Id`, `Name`) 
-        VALUES (DEFAULT,'$name')";
+        $query = "INSERT INTO categories (`CatId`, `CatName`, `CreatedAt`, `CreatedBy`) 
+        VALUES (DEFAULT,'$name', DEFAULT, '$userid')";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -76,10 +77,11 @@ class CategoriesData
     public static function UpdateCategory($category)
     {
         $db = Database::getInstance()->getConnection();
-        $id = $category->Id;
-        $name = $category->Name;
+        $id = $category->CatId;
+        $name = $category->CatName;
+        $userid = $category->UserId;
 
-        $query = "UPDATE categories SET Name='$name' WHERE Id='$id'";
+        $query = "UPDATE categories SET CatName='$name', CreatedBy='$userid', CreatedAt=DEFAULT  WHERE CatId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -89,6 +91,21 @@ class CategoriesData
         }
     }
 
+    // D E L E T I N G
+    public static function DeleteCategory($category)
+    {
+        $db = Database::getInstance()->getConnection();
 
+        $userid = $category->UserId;
+        $id = $category->id;
+        $query = "UPDATE categories SET isDeleted='1', DeletedBy='$userid', DeletedAt=DEFAULT WHERE CatId='$id'";
+
+        $result = mysqli_query($db, $query);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
