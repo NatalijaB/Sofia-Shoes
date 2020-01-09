@@ -218,7 +218,9 @@ if (!in_array($method, $supported_methods)) {
 
                     $id = intval($url_parts[2]);
 
-                    $isDeleted = CategoriesData::DeleteCategory($id);
+                    $data = json_decode(file_get_contents("php://input"));
+
+                    $isDeleted = CategoriesData::DeleteCategory($data);
 
                     if ($id == -1) {
                         $response->status = 400;
@@ -233,7 +235,9 @@ if (!in_array($method, $supported_methods)) {
 
                         $id = intval($url_parts[2]);
 
-                        $isDeleted = ShoesData::DeleteShoes($id);
+                        $data = json_decode(file_get_contents("php://input"));
+
+                        $isDeleted = ShoesData::DeleteShoes($data);
 
                         if ($id == -1) {
                             $response->status = 400;
@@ -248,7 +252,10 @@ if (!in_array($method, $supported_methods)) {
 
                             $id = intval($url_parts[2]);
 
-                            $isDeleted = UsersData::DeleteUser($id);
+
+                            $data = json_decode(file_get_contents("php://input"));
+
+                            $isDeleted = UsersData::DeleteUser($data);
 
                             if ($id == -1) {
                                 $response->status = 400;

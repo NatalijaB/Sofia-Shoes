@@ -339,9 +339,9 @@ if (!isset($_SESSION['username'])) {
         </div>
     </section>
 
-
-
-
+    <script type="text/javascript">
+    let userid = "<?php echo $_SESSION['userid'] ?>"
+    </script>
     <script src="JS/categories.js"></script>
     <script src="JS/shoes.js"></script>
     <script src="JS/users.js"></script>

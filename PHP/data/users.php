@@ -68,9 +68,10 @@ class UsersData
         $email = $newUser->Email;
         $username = $newUser->Username;
         $password = $newUser->password;
+        $userid = $newUser->CreatedBy;
 
-        $query = "INSERT INTO users (`UsersId`, `FirstName`, `LastName`, `email`, `Username`, `password`) 
-        VALUES (DEFAULT,'$fname', '$lname', '$email', '$username' '$password')";
+        $query = "INSERT INTO users (`UsersId`, `FirstName`, `LastName`, `email`, `Username`, `password`, `CreatedAt`, `CreatedBy`) 
+        VALUES (DEFAULT,'$fname', '$lname', '$email', '$username' '$password', CURRENT_TIMESTAMP, `$userid`)";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -92,8 +93,9 @@ class UsersData
         $email = $updateUser->email;
         $password = $updateUser->Password;
         $username = $updateUser->Username;
+        $userid = $updateUser->UpdatedBy;
 
-        $query = "UPDATE users SET FirstName='$fname', LastName='$lname', email='$email', Username='$username', Password='$password', WHERE UsersId='$id'";
+        $query = "UPDATE users SET FirstName='$fname', LastName='$lname', email='$email', Username='$username', Password='$password', UpdatedAt= CURRENT_TIMESTAMP, UpdatedBy='$userid' WHERE UsersId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -108,11 +110,14 @@ class UsersData
     // deleting
 
 
-    public static function DeleteUser($id)
+    public static function DeleteUser($data)
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "UPDATE users SET isDeleted='1' WHERE UsersId='$id'";
+        $id=$data->Id;
+        $userid=$data->DeletedBy;
+
+        $query = "UPDATE users SET isDeleted='1', DeletedAt=CURRENT_TIMESTAMP, DeletedBy='$userid', WHERE UsersId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {

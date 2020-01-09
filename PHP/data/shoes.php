@@ -80,9 +80,10 @@ class ShoesData
         $size = $newShoes->Size;
         $imgUrl = $newShoes->ImgUrl;
         $category = $newShoes->Category;
+        $usersid = $newShoes->CreatedBy;
 
-        $query = "INSERT INTO shoes (`ShoesId`, `Passcode`, `ShoesName`, `Description`, `Price`, `Size`, `ImgUrl`, `Category`) 
-        VALUES (DEFAULT,'$passcode', '$name', '$description', '$price', '$size', '$imgUrl', '$category')";
+        $query = "INSERT INTO shoes (`ShoesId`, `Passcode`, `ShoesName`, `Description`, `Price`, `Size`, `ImgUrl`, `Category`, `CreatedAt`, `CreatedBy`) 
+        VALUES (DEFAULT,'$passcode', '$name', '$description', '$price', '$size', '$imgUrl', '$category', CURRENT_TIMESTAMP, '$usersid')";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -107,8 +108,9 @@ class ShoesData
         $size = $data->Size;
         $imgUrl = $data->ImgUrl;
         $category = $data->Category;
+        $usersid = $data->UpdatedBy;
  	
-        $query = "UPDATE shoes SET Passcode='$passcode', ShoesName='$name', Description='$description', Price='$price', Size='$size', ImgUrl='$imgUrl', Category='$category' WHERE ShoesId='$id'";
+        $query = "UPDATE shoes SET Passcode='$passcode', ShoesName='$name', Description='$description', Price='$price', Size='$size', ImgUrl='$imgUrl', Category='$category', UpdatedAt=CURRENT_TIMESTAMP, UpdatedBy='$usersid' WHERE ShoesId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -120,11 +122,14 @@ class ShoesData
 
     //D E L E T I N G
 
-    public static function DeleteShoes($id)
+    public static function DeleteShoes($data)
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "UPDATE shoes SET isDeleted='1' WHERE ShoesId='$id'";
+        $id = $data->Id;
+        $usersid = $data->DeletedBy;
+
+        $query = "UPDATE shoes SET isDeleted='1', DeletedAt=CURRENT_TIMESTAMP, DeletedBy='$usersid' WHERE ShoesId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {

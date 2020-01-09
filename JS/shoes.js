@@ -40,6 +40,7 @@ $(document).ready(() => {
             'Passcode': passcode.val().trim(),
             'ImgUrl': imgUrl.val().trim(),
             'Category': category.val(),
+            'CreatedBy': userid,
         };
         ajaxPostShoes(urlShoes, data);
         console.log(data);
@@ -77,6 +78,7 @@ $(document).ready(() => {
                 'Passcode': updatePasscode.val().trim(),
                 'ImgUrl': updateImgUrl.val().trim(),
                 'Category': updateCategory.val(),
+                'UpdatedBy': userid,
             };
             ajaxPostShoes(serverUrl, data);
             console.log(data)
@@ -96,7 +98,11 @@ $(document).ready(() => {
     $('#delShoesBtn').click(() => {
         shoesId = window.localStorage.getItem('shoesId');
         let serverUrl = `${urlShoes}/${shoesId}`;
-        ajaxDelShoes(serverUrl);
+        let data = {
+            'Id' : shoesId,
+            'DeletedBy': userid,
+        }
+        ajaxDelShoes(serverUrl, data);
         $('.delShoes').hide();
     })
 
@@ -160,10 +166,13 @@ function ajaxGetShoes(id) {
     })
 }
 
-function ajaxDelShoes(url) {
+function ajaxDelShoes(url, data) {
     $.ajax({
         type: "DELETE",
         url: url,
+        data: JSON.stringify(data),
+        dataType: "application/json",
+        contentType: "application/json; charset=utf-8",
         success: (resp) => {
             console.log(resp);
         },

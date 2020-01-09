@@ -1,6 +1,5 @@
 const urlCat = '/sofia-shoes/categories';
 $(document).ready( ()=> {
-
     // L I S T I N G
 
     ajaxGetAllCat();
@@ -29,8 +28,10 @@ $(document).ready( ()=> {
         let name = $('#name');
         let data = {
             'CatName': name.val().trim(),
+            'CreatedBy': userid,
         };
         ajaxPostCat(serverUrl, data);
+        console.log(data);
         $('.addCat').hide();
     });
 
@@ -55,9 +56,11 @@ $(document).ready( ()=> {
         let updateName = $('#updateName');
         let data = {
             'CatName': updateName.val().trim(),
-            'CatId': catId
+            'CatId': catId,
+            'UpdatedBy': userid,
         };
         ajaxPostCat(serverUrl, data);
+        console.log(data);
         $('.updateCat').hide();
     })
 
@@ -75,7 +78,11 @@ $(document).ready( ()=> {
         
         catId = window.localStorage.getItem('catId');
         let serverUrl = `${urlCat}/${catId}`;
-        ajaxDelCat(serverUrl);
+        let data = {
+            'DeletedBy': userid,
+            'CatId': catId,
+        }
+        ajaxDelCat(serverUrl, data);
         $('.delCat').hide();
     })
 
@@ -109,7 +116,7 @@ function ajaxPostCat(url, data) {
 function ajaxGetCat(id) {
 
     $.ajax({
-        url: `${urlCat}/${catId}`,
+        url: `${urlCat}/${id}`,
         success: (resp) => {
             console.log(resp)
             name = resp[0].CatName;
@@ -135,10 +142,13 @@ function ajaxGetAllCat() {
     });
 }
 
-function ajaxDelCat (url){
+function ajaxDelCat (url, data){
     $.ajax({
         type:"DELETE",
         url: url,
+        data: JSON.stringify(data),
+        dataType: "application/json",
+        contentType: "application/json; charset=utf-8",
         success: (resp)=>{
             console.log(resp);
         },

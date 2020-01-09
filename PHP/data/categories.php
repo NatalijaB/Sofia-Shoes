@@ -58,11 +58,11 @@ class CategoriesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $name = $newCategory->Name;
-        $userid = $newCategory->UserId;
+        $name = $newCategory->CatName;
+        $userid = $newCategory->CreatedBy;
 
         $query = "INSERT INTO categories (`CatId`, `CatName`, `CreatedAt`, `CreatedBy`) 
-        VALUES (DEFAULT,'$name', DEFAULT, '$userid')";
+        VALUES (DEFAULT,'$name', CURRENT_TIMESTAMP , '$userid')";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -79,9 +79,9 @@ class CategoriesData
         $db = Database::getInstance()->getConnection();
         $id = $category->CatId;
         $name = $category->CatName;
-        $userid = $category->UserId;
+        $userid = $category->UpdatedBy;
 
-        $query = "UPDATE categories SET CatName='$name', CreatedBy='$userid', CreatedAt=DEFAULT  WHERE CatId='$id'";
+        $query = "UPDATE categories SET CatName='$name', UpdatedBy='$userid', UpdatedAt=CURRENT_TIMESTAMP  WHERE CatId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -96,9 +96,9 @@ class CategoriesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $userid = $category->UserId;
-        $id = $category->id;
-        $query = "UPDATE categories SET isDeleted='1', DeletedBy='$userid', DeletedAt=DEFAULT WHERE CatId='$id'";
+        $userid = $category->DeletedBy;
+        $id = $category->CatId;
+        $query = "UPDATE categories SET isDeleted='1', DeletedBy='$userid', DeletedAt=CURRENT_TIMESTAMP WHERE CatId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {

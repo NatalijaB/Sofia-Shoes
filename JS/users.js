@@ -37,6 +37,7 @@ $(document).ready(() => {
             'Username': username.val().trim(),
             'Email': email.val().trim(),
             'Password': password.val().trim(),
+            'CreatedBy': userid,
         };
         ajaxPostUsers(urlUsers, data);
         console.log(data);
@@ -69,6 +70,7 @@ $(document).ready(() => {
                 'Username': updateUsername.val().trim(),
                 'Email': updateEmail.val().trim(),
                 'Password': updatePassword.val().trim(),
+                'UpdatedBy': userid,
             };
             ajaxPostUsers(serverUrl, data);
             console.log(data)
@@ -89,7 +91,11 @@ $(document).ready(() => {
         
         usersId = window.localStorage.getItem('usersId');
         let serverUrl = `${urlUsers}/${usersId}`;
-        ajaxDelUsers(serverUrl);
+        let data = {
+            'Id':usersId,
+            'DeletedBy': userid,
+        }
+        ajaxDelUsers(serverUrl,data);
         $('.delUsers').hide();
     })
 
@@ -153,10 +159,13 @@ function ajaxGetUsers (id){
     })
 }
 
-function ajaxDelUsers (url){
+function ajaxDelUsers (url, data){
     $.ajax({
         type:"DELETE",
         url: url,
+        data: JSON.stringify(data),
+        dataType: "application/json",
+        contentType: "application/json; charset=utf-8",
         success: (resp)=>{
             console.log(resp);
         },
