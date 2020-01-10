@@ -30,10 +30,16 @@ class ShoesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "SELECT s.*, c.CatName as CategoryName, c.CatId as CatId
-        FROM shoes as s
-        join categories as c
-        ON c.CatId = s.Category
+        $query = "SELECT h.*, c.CatName as CategoryName, c.CatId as CatId, u.Username as cUsername, s.Username as uUsername,
+        DATE_FORMAT(DATE(s.CreatedAt), '%D %M %Y') as cDate,
+        DATE_FORMAT(DATE(s.UpdatedAt), '%D %M %Y') as uDate
+        FROM shoes as h
+        JOIN categories as c
+        ON c.CatId = h.Category
+        JOIN users as u
+        ON h.CreatedBy = u.UsersId
+        LEFT JOIN users as s
+        ON h.UpdatedBy = s.UsersId
         WHERE s.isDeleted='0'";
 
         $result = mysqli_query($db, $query);
@@ -136,6 +142,28 @@ class ShoesData
             return true;
         } else {
             return false;
+        }
+    }
+
+    // O R D E R I N G
+
+    public static function OrderShoes($criteria)
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $criteria = $criteria->Criteria;
+
+        $query = "SELECT * FROM shoes ORDER BY '$criteria'";
+
+        $result = mysqli_query($db, $query);
+        if ($result) {
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+            return $data;
+        } else {
+            return [];
         }
     }
 }

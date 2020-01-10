@@ -16,7 +16,15 @@ class CategoriesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "SELECT * FROM categories WHERE isDeleted='0'";
+        $query = "SELECT c.*, u.Username as cUsername, s.Username as uUsername,
+        DATE_FORMAT(DATE(c.CreatedAt), '%D %M %Y') as cDate,
+        DATE_FORMAT(DATE(c.UpdatedAt), '%D %M %Y') as uDate
+        FROM categories as c
+        JOIN users as u
+        ON c.CreatedBy = u.UsersId
+        LEFT JOIN users as s
+        ON c.UpdatedBy = s.UsersId
+        WHERE c.isDeleted='0'";
 
         $result = mysqli_query($db, $query);
         if ($result) {

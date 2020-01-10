@@ -135,7 +135,7 @@ function ajaxGetAllShoes() {
         success: function (resp) {
             let shoes = resp;
             shoes.forEach(e => {
-                let tableContent = createShoes(e.ShoesName, e.Description, e.Price, e.Size, e.CategoryName, e.ShoesId);
+                let tableContent = createShoes(e.ShoesName, e.Description, e.Price, e.Size, e.CategoryName, e.ShoesId, e.cUsername, e.cDate, e.uDate, e.uUsername);
                 $('#shoesTableBody').append(tableContent);
             });
             $('#shoesTable').DataTable();
@@ -183,7 +183,7 @@ function ajaxDelShoes(url, data) {
 }
 
 
-function createShoes(name, description, price, size, categoryName, id) {
+function createShoes(name, description, price, size, categoryName, id, cUsername, cDate, uDate, uUsername) {
     let shoes =
         `
         <tr>
@@ -192,6 +192,10 @@ function createShoes(name, description, price, size, categoryName, id) {
         <td>${price}</td>
         <td>${size}</td>
         <td>${categoryName}</td>
+        <td>${cUsername}</td>
+        <td>${cDate}</td>
+        <td>${uUsername}</td>
+        <td>${uDate}</td>
         <td><i data-id="${id}" class="fa fa-edit fa-2x shoes-edit"></i></td>
         <td><i data-id="${id}" class="fa fa-trash fa-2x shoes-del"></i></td>
         </tr>

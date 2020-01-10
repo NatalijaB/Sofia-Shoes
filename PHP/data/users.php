@@ -23,7 +23,15 @@ class UsersData
     public static function GetAllUsers()
     {
         $db = Database::getInstance()->getConnection();
-        $query = "SELECT * FROM users WHERE isDeleted='0'";
+        $query = "SELECT u.*, c.Username as cUsername, s.Username as uUsername,
+        DATE_FORMAT(DATE(u.CreatedAt), '%D %M %Y') as cDate,
+        DATE_FORMAT(DATE(u.UpdatedAt), '%D %M %Y') as uDate
+        FROM users as u
+        JOIN users as c
+        ON u.CreatedBy = c.UsersId
+        LEFT JOIN users as s
+        ON u.UpdatedBy = s.UsersId
+        WHERE u.isDeleted='0'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -67,11 +75,11 @@ class UsersData
         $lname = $newUser->LastName;
         $email = $newUser->Email;
         $username = $newUser->Username;
-        $password = $newUser->password;
+        $password = $newUser->Password;
         $userid = $newUser->CreatedBy;
 
         $query = "INSERT INTO users (`UsersId`, `FirstName`, `LastName`, `email`, `Username`, `password`, `CreatedAt`, `CreatedBy`) 
-        VALUES (DEFAULT,'$fname', '$lname', '$email', '$username' '$password', CURRENT_TIMESTAMP, `$userid`)";
+        VALUES (DEFAULT,'$fname', '$lname', '$email', '$username', '$password', CURRENT_TIMESTAMP, '$userid')";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -87,7 +95,7 @@ class UsersData
     {
         $db = Database::getInstance()->getConnection();
 
-        $id = $updateUser->Id;
+        $id = $updateUser->UsersId;
         $fname = $updateUser->FirstName;
         $lname = $updateUser->LastName;
         $email = $updateUser->email;

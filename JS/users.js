@@ -65,6 +65,7 @@ $(document).ready(() => {
             let updateEmail = $('#updateEmail');
             let updatePassword = $('#updatePassword');
             let data = {
+                'UsersId': usersId,
                 'FirstName': updatefName.val().trim(),
                 'LastName': updatelName.val().trim(),
                 'Username': updateUsername.val().trim(),
@@ -129,7 +130,7 @@ function ajaxGetAllUsers(){
         success: function (resp) {
             let users = resp;
             users.forEach(e => {
-                let tableContent = createUsers(e.FirstName, e.LastName, e.Username, e.UsersId);
+                let tableContent = createUsers(e.FirstName, e.LastName, e.Username, e.UsersId, e.cUsername, e.cDate, e.uUsername, e.uDate);
                 $('#usersTableBody').append(tableContent);
             });
             $('#usersTable').DataTable();
@@ -176,13 +177,17 @@ function ajaxDelUsers (url, data){
 }
 
 
-function createUsers(fname, lname, username, id) {
+function createUsers(fname, lname, username, id, cUsername, cDate, uUsername, uDate) {
     let users =
         `
         <tr>
         <td>${fname}</td>
         <td>${lname}</td>
         <td>${username}</td>
+        <td>${cUsername}</td>
+        <td>${cDate}</td>
+        <td>${uUsername}</td>
+        <td>${uDate}</td>
         <td><i data-id="${id}" class="fa fa-edit fa-2x users-edit"></i></td>
         <td><i data-id="${id}" class="fa fa-trash fa-2x users-del"></i></td>
         </tr>

@@ -41,6 +41,17 @@ require_once 'PHP/config.php';
 
     <section class="container">
         <h1>Featured:</h1>
+        <!-- <div class="form-group">
+            <label for="order">Order shoes by:</label>
+            <select name="order" id="order" class="form-control">
+                <option value=""></option>
+                <option value="Name">Name</option>
+                <option value="Price">Price</option>
+                <option value="Category">Category</option>
+            </select> -->
+        </div>
+
+
         <div class="row">
         </div>
     </section>

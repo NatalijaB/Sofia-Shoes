@@ -132,7 +132,7 @@ function ajaxGetAllCat() {
         success: (resp) => {
             let categories = resp;
             categories.forEach(e => {
-                let tableContent = createCat(e.CatName, e.CatId);
+                let tableContent = createCat(e.CatName, e.CatId, e.cUsername, e.cDate, e.uUsername, e.uDate);
                 $('#catTableBody').append(tableContent);
                 $('#updateCatOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
                 $('#catOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
@@ -159,11 +159,15 @@ function ajaxDelCat (url, data){
 }
 
 
-function createCat(name, id) {
+function createCat(name, id, cUsername, cDate, uUsername, uDate) {
     let category =
         `
         <tr>
         <td>${name}</td>
+        <td>${cUsername}</td>
+        <td>${cDate}</td>
+        <td>${uUsername}</td>
+        <td>${uDate}</td>
         <td><i data-id="${id}" class="fa fa-edit fa-2x cat-edit"></i></td>
         <td><i data-id="${id}" class="fa fa-trash fa-2x cat-del"></i></td>
         </tr>

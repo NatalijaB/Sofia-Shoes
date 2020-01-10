@@ -1,7 +1,11 @@
 $(document).ready(() => {
     getShoes();
-});
 
+
+    // $('#order').change(()=>{
+    //     let selected = $('#order :selected')
+    // })
+});
 
 
 function getShoes() {
