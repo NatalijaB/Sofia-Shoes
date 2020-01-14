@@ -5,7 +5,7 @@ $(document).ready(() => {
 
     ajaxGetAllCat();
 
-    // FORM DISPLAY (srediti)
+    // FORM DISPLAY
     $('#addCat').click(() => {
         $('.addCat').show();
     })
@@ -33,14 +33,12 @@ $(document).ready(() => {
         },
         submitHandler: function (form) {
             form.submit();
-            let serverUrl = urlCat;
             let name = $('#name');
             let data = {
                 'CatName': name.val().trim(),
                 'CreatedBy': userid,
             };
-            ajaxPostCat(serverUrl, data);
-            console.log(data);
+            post(urlCat, data);
             $('.addCat').hide();
         }
     });
@@ -51,6 +49,7 @@ $(document).ready(() => {
 
 
     let catId;
+
     $(document).on('click', '.cat-edit', function () {
 
         window.localStorage.setItem('catId', this.dataset.id);
@@ -72,6 +71,7 @@ $(document).ready(() => {
             form.submit();
 
             catId = window.localStorage.getItem('catId');
+
             let serverUrl = `${urlCat}/${catId}`;
             let updateName = $('#updateName');
             let data = {
@@ -79,8 +79,7 @@ $(document).ready(() => {
                 'CatId': catId,
                 'UpdatedBy': userid,
             };
-            ajaxPostCat(serverUrl, data);
-            console.log(data);
+            postData(serverUrl, data);
             $('.updateCat').hide();
         }
     });
@@ -92,6 +91,7 @@ $(document).ready(() => {
 
         window.localStorage.setItem('catId', this.dataset.id);
         catId = window.localStorage.getItem('catId');
+        
         $('.delCat').show();
     });
 
@@ -103,7 +103,7 @@ $(document).ready(() => {
             'DeletedBy': userid,
             'CatId': catId,
         }
-        ajaxDelCat(serverUrl, data);
+        deleteData(serverUrl, data);
         $('.delCat').hide();
     })
 
@@ -114,24 +114,6 @@ $(document).ready(() => {
 
 
 // functions
-
-
-function ajaxPostCat(url, data) {
-
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error: (e) => {
-            console.log(e);
-        }
-    });
-}
 
 
 function ajaxGetCat(id) {
@@ -161,22 +143,6 @@ function ajaxGetAllCat() {
             $('#catTable').DataTable();
         }
     });
-}
-
-function ajaxDelCat(url, data) {
-    $.ajax({
-        type: "DELETE",
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error: (e) => {
-            console.log(e)
-        }
-    })
 }
 
 

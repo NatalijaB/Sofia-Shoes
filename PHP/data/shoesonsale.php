@@ -39,10 +39,14 @@ class ShoesOnSaleData
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "SELECT s.*, h.ShoesName as ShoesName, h.Price as Price, h.Description as Description, h.ImgUrl as ImgUrl, h.Size as Size
+        $query = "SELECT s.*, h.ShoesName as ShoesName, h.Price as Price, h.Description as Description, h.ImgUrl as ImgUrl, h.Size as Size,
+        DATE_FORMAT(DATE(l.StartDate), '%d/%d/%Y') as StartDate,
+        DATE_FORMAT(DATE(l.EndDate), '%d/%m/%Y') as EndDate
         FROM shoesonsale as s
         JOIN shoes as h
         ON s.ShoesId = h.ShoesId
+        JOIN sales as l
+        on l.SalesId = s.SalesId
         WHERE s.SalesId='$id'";
 
         $result = mysqli_query($db, $query);
@@ -56,6 +60,8 @@ class ShoesOnSaleData
             return [];
         }
     }
+
+
 
 
     // A D D I N G

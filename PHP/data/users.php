@@ -24,8 +24,8 @@ class UsersData
     {
         $db = Database::getInstance()->getConnection();
         $query = "SELECT u.*, c.Username as cUsername, s.Username as uUsername,
-        DATE_FORMAT(DATE(u.CreatedAt), '%D %M %Y') as cDate,
-        DATE_FORMAT(DATE(u.UpdatedAt), '%D %M %Y') as uDate
+        DATE_FORMAT(DATE(u.CreatedAt), '%d/%m/%Y') as cDate,
+        DATE_FORMAT(DATE(u.UpdatedAt), '%d/%m/%Y') as uDate
         FROM users as u
         JOIN users as c
         ON u.CreatedBy = c.UsersId
@@ -75,7 +75,7 @@ class UsersData
         $lname = mysqli_escape_string($db, $newUser->LastName);
         $email = mysqli_escape_string($db, $newUser->Email);
         $username = mysqli_escape_string($db, $newUser->Username);
-        $password = mysqli_escape_string($db, $newUser->Password);
+        $password = md5(mysqli_escape_string($db, $newUser->Password)) ;
         $userid = mysqli_escape_string($db, $newUser->CreatedBy);
 
         $query = "INSERT INTO users (`UsersId`, `FirstName`, `LastName`, `email`, `Username`, `password`, `CreatedAt`, `CreatedBy`) 
@@ -99,7 +99,7 @@ class UsersData
         $fname = mysqli_escape_string($db, $updateUser->FirstName);
         $lname = mysqli_escape_string($db, $updateUser->LastName);
         $email = mysqli_escape_string($db, $updateUser->Email);
-        $password = mysqli_escape_string($db, $updateUser->Password);
+        $password = md5(mysqli_escape_string($db, $updateUser->Password));
         $username = mysqli_escape_string($db, mysqli_escape_string($db, $updateUser->Username));
         $userid = mysqli_escape_string($db, $updateUser->UpdatedBy);
 

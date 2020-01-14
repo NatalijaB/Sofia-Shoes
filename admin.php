@@ -365,7 +365,8 @@ if (!isset($_SESSION['username'])) {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Date</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                         <th>Created By:</th>
                         <th>Created At:</th>
                         <th>Updated By:</th>
@@ -394,8 +395,12 @@ if (!isset($_SESSION['username'])) {
                             <input type="text" class="form-control" id="sname" name="sname" placeholder="Sale name" required>
                         </div>
                         <div class="form-group">
-                            <label for="date">Expiration date:</label>
-                            <input type="date" class="form-control" id="date" name="date" required>
+                            <label for="date">Start date:</label>
+                            <input type="date" class="form-control" id="sdate" name="sdate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">End date:</label>
+                            <input type="date" class="form-control" id="edate" name="edate" required>
                         </div>
                         <button id='addSalesBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
@@ -417,8 +422,12 @@ if (!isset($_SESSION['username'])) {
                             <input type="text" class="form-control" id="updatesName" name="updatesName" required>
                         </div>
                         <div class="form-group">
-                            <label for="updateDate">Date:</label>
-                            <input type="text" class="form-control" id="updateDate" name="updateDate" required>
+                            <label for="updateSDate">Start Date:</label>
+                            <input type="date" class="form-control" id="updateSDate" name="updateSDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateEDate">End Date:</label>
+                            <input type="date" class="form-control" id="updateEDate" name="updateEDate" required>
                         </div>
                         <button id='updateSalesBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
@@ -454,6 +463,8 @@ if (!isset($_SESSION['username'])) {
     <script type="text/javascript">
         let userid = "<?php echo $_SESSION['userid'] ?>"
     </script>
+
+    <script src="JS/helpers.js"></script>
     <script src="JS/categories.js"></script>
     <script src="JS/shoes.js"></script>
     <script src="JS/users.js"></script>

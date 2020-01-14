@@ -4,7 +4,7 @@ $(document).ready(() => {
 
     ajaxGetAllSales();
 
-    // FORM DISPLAY (srediti)
+    // FORM DISPLAY
     $('#addSales').click(() => {
         $('.addSales').show();
     })
@@ -29,22 +29,26 @@ $(document).ready(() => {
     $("#salesFormAdd").validate({
         rules: {
             sname: "required",
-            date: "required"
+            sdate: "required",
+            edate: "required"
         },
         messages: {
             sname: "Please enter name of the sale",
-            date: "Please choose a date for a sale"
+            sdate: "Please choose a start date for a sale",
+            edate: "Please choose an end date for a sale",
         },
         submitHandler: function (form) {
             form.submit();
             let name = $('#sname');
-            let date = $('#date');
+            let sdate = $('#sdate');
+            let edate = $('#edate');
             let data = {
                 'SalesName': name.val().trim(),
-                'Date': date.val(),
+                'StartDate': sdate.val(),
+                'EndDate': edate.val(),
                 'CreatedBy': userid,
             };
-            ajaxPostSales(urlSales, data);
+            postData(urlSales, data);
             console.log(data);
             $('.addSales').hide();
         }
@@ -66,11 +70,13 @@ $(document).ready(() => {
     $("#salesFormUpdate").validate({
         rules: {
             updateSname: "required",
-            updateDate: "required"
+            updateSDate: "required",
+            updateEDate: "required"
         },
         messages: {
             updateSname: "Please enter name of the sale",
-            updateDate: "Please choose a date for a sale"
+            updateSDate: "Please choose a start date for a sale",
+            updateEDate: "Please choose an end date for a sale"
         },
         submitHandler: function (form) {
             form.submit();
@@ -78,14 +84,16 @@ $(document).ready(() => {
             salesId = window.localStorage.getItem('salesId');
             let serverUrl = `${urlSales}/${salesId}`;
             let updateName = $('#updatesName');
-            let updateDate = $('#updateDate');
+            let updateSDate = $('#updateSDate');
+            let updateEDate = $('#updateEDate');
             let data = {
                 'SalesName': updateName.val().trim(),
-                'Date': updateDate.val(),
+                'StartDate': updateSDate.val(),
+                'EndDate': updateEDate.val(),
                 'SalesId': salesId,
                 'UpdatedBy': userid,
             };
-            ajaxPostSales(serverUrl, data);
+            postData(serverUrl, data);
             console.log(data);
             $('.updateSales').hide();
         }
@@ -109,7 +117,7 @@ $(document).ready(() => {
             'DeletedBy': userid,
             'SalesId': salesId,
         }
-        ajaxDelSales(serverUrl, data);
+        deleteData(serverUrl, data);
         $('.delSales').hide();
     })
 
@@ -124,7 +132,7 @@ $(document).ready(() => {
         $('.addItems').show();
 
         $('#addItemsBtn').off('click').on('click', () => {
-
+            let serverUrl = '/sofia-shoes/shoesonsale';
             let form = document.forms[8];
             let data = [];
 
@@ -137,8 +145,7 @@ $(document).ready(() => {
                 }
             }
 
-            ajaxShoesOnSale(data)
-            console.log(data)
+            postData(serverUrl, data)
             $('.addItems').hide();
         })
     })
@@ -157,9 +164,11 @@ function ajaxGetSales(id) {
         success: (resp) => {
             console.log(resp)
             name = resp[0].SalesName;
-            date = resp[0].Date;
+            sdate = resp[0].StartDate;
+            edate = resp[0].EndDate;
             $('#updatesName').val(name);
-            $('#updateDate').val(date);
+            $('#updateSDate').val(sdate);
+            $('#updateEDate').val(edate);
         }
     })
 }
@@ -171,71 +180,23 @@ function ajaxGetAllSales() {
         success: (resp) => {
             let sales = resp;
             sales.forEach(e => {
-                let tableContent = createSales(e.SalesName, e.Date, e.SalesId, e.cUsername, e.cDate, e.uUsername, e.uDate);
+                let tableContent = createSales(e.SalesName, e.StartDate, e.EndDate, e.SalesId, e.cUsername, e.cDate, e.uUsername, e.uDate);
                 $('#salesTableBody').append(tableContent);
             });
             $('#salesTable').DataTable();
         }
     });
 }
-function ajaxPostSales(url, data) {
-
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "application/json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error: (e) => {
-            console.log(e);
-        }
-    });
-}
 
 
 
-function ajaxDelSales(url, data) {
-    $.ajax({
-        type: "DELETE",
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "application/json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error: (e) => {
-            console.log(e)
-        }
-    })
-}
-
-function ajaxShoesOnSale(data) {
-    $.ajax({
-        type: 'POST',
-        url: '/sofia-shoes/shoesonsale',
-        data: JSON.stringify(data),
-        dataType: "application/json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error: (e) => {
-            console.log(e);
-        }
-    });
-}
-
-
-function createSales(name, date, id, cUsername, cDate, uUsername, uDate) {
+function createSales(name, startDate, endDate, id, cUsername, cDate, uUsername, uDate) {
     let sales =
         `
         <tr>
         <td>${name}</td>
-        <td>${date}</td>
+        <td>${startDate}</td>
+        <td>${endDate}</td>
         <td>${cUsername}</td>
         <td>${cDate}</td>
         <td>${uUsername}</td>
@@ -247,3 +208,5 @@ function createSales(name, date, id, cUsername, cDate, uUsername, uDate) {
         `
     return sales;
 }
+
+

@@ -31,8 +31,8 @@ class ShoesData
         $db = Database::getInstance()->getConnection();
 
         $query = "SELECT sh.*, c.CatName as CategoryName, c.CatId as CatId, u.Username as cUsername, s.Username as uUsername,
-        DATE_FORMAT(DATE(sh.CreatedAt), '%D %M %Y') as cDate,
-        DATE_FORMAT(DATE(sh.UpdatedAt), '%D %M %Y') as uDate
+        DATE_FORMAT(DATE(sh.CreatedAt), '%d/m/%Y') as cDate,
+        DATE_FORMAT(DATE(sh.UpdatedAt), '%d/%m/%Y') as uDate
         FROM shoes as sh
         JOIN categories as c
         ON c.CatId = sh.Category

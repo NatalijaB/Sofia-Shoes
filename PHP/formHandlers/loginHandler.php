@@ -7,7 +7,7 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $username = mysqli_real_escape_string($con, $_POST['username']);
-    $password = mysqli_real_escape_string($con, $_POST['password']);
+    $password = md5(mysqli_real_escape_string($con, $_POST['password']));
 
     $sql = "SELECT UsersId FROM users WHERE Username = '$username' and Password = '$password'";
     $result = mysqli_query($con, $sql);

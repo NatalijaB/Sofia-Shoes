@@ -1,4 +1,4 @@
-const urlShoes = '/sofia-shoes/shoes'
+const urlShoes = '/sofia-shoes/shoes';
 
 $(document).ready(() => {
 
@@ -62,8 +62,7 @@ $(document).ready(() => {
                 'Category': category.val(),
                 'CreatedBy': userid,
             };
-            ajaxPostShoes(urlShoes, data);
-            console.log(data);
+            postData(urlShoes, data);
             $('.addShoes').hide();
         }
     });
@@ -71,6 +70,7 @@ $(document).ready(() => {
 
     // U P D A T I N G
     let shoesId;
+
     $(document).on('click', '.shoes-edit', function () {
 
         window.localStorage.setItem('shoesId', this.dataset.id);
@@ -120,8 +120,7 @@ $(document).ready(() => {
                     'Category': updateCategory.val(),
                     'UpdatedBy': userid,
                 };
-                ajaxPostShoes(serverUrl, data);
-                console.log(data)
+                postData(serverUrl, data);
                 $('.updateShoes').hide();
             }
         });
@@ -143,7 +142,7 @@ $(document).ready(() => {
             'Id' : shoesId,
             'DeletedBy': userid,
         }
-        ajaxDelShoes(serverUrl, data);
+        deleteData(serverUrl, data);
         $('.delShoes').hide();
     })
 
@@ -153,23 +152,6 @@ $(document).ready(() => {
 
 // functions
 
-
-function ajaxPostShoes(url, data) {
-
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "application/json",
-        contentType: "application/json; charset=utf-8",
-        success: function (serverResponse) {
-            console.log(serverResponse);
-        },
-        error: function (e) {
-            console.log(e);
-        }
-    });
-}
 function ajaxGetAllShoes() {
     $.ajax({
         url: urlShoes,
@@ -210,21 +192,6 @@ function ajaxGetShoes(id) {
     })
 }
 
-function ajaxDelShoes(url, data) {
-    $.ajax({
-        type: "DELETE",
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "application/json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error: (e) => {
-            console.log(e)
-        }
-    })
-}
 
 
 function createShoes(name, description, price, size, categoryName, id, cUsername, cDate, uDate, uUsername) {

@@ -17,8 +17,8 @@ class CategoriesData
         $db = Database::getInstance()->getConnection();
 
         $query = "SELECT c.*, u.Username as cUsername, s.Username as uUsername,
-        DATE_FORMAT(DATE(c.CreatedAt), '%D %M %Y') as cDate,
-        DATE_FORMAT(DATE(c.UpdatedAt), '%D %M %Y') as uDate
+        DATE_FORMAT(DATE(c.CreatedAt), '%d/%m/%Y') as cDate,
+        DATE_FORMAT(DATE(c.UpdatedAt), '%d/%m/%Y') as uDate
         FROM categories as c
         JOIN users as u
         ON c.CreatedBy = u.UsersId

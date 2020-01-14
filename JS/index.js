@@ -1,12 +1,7 @@
 const url = '/sofia-shoes/shoes';
-const urlSale = '/sofia-shoes/shoesonsale/1';
 
 $(document).ready(() => {
-    if(window.location.href == 'http://localhost/sofia-shoes/index.php'){
-        getShoes(url);
-    } else{
-        getShoes(urlSale)
-    }
+    getShoes(url);
 });
 
 

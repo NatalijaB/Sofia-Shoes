@@ -19,8 +19,10 @@ class SalesData
         $db = Database::getInstance()->getConnection();
 
         $query = "SELECT sl.*, u.Username as cUsername, s.Username as uUsername,
-        DATE_FORMAT(DATE(sl.CreatedAt), '%D %M %Y') as cDate,
-        DATE_FORMAT(DATE(sl.UpdatedAt), '%D %M %Y') as uDate
+        DATE_FORMAT(DATE(sl.StartDate), '%d/%m/%Y') as StartDate,
+        DATE_FORMAT(DATE(sl.EndDate), '%d/%m/%Y') as EndDate,
+        DATE_FORMAT(DATE(sl.CreatedAt), '%d/%m/%Y') as cDate,
+        DATE_FORMAT(DATE(sl.UpdatedAt), '%d/%m/%Y') as uDate
         FROM sales as sl
         JOIN users as u
         ON sl.CreatedBy = u.UsersId
@@ -69,11 +71,13 @@ class SalesData
         $db = Database::getInstance()->getConnection();
 
         $name = mysqli_real_escape_string($db, $newSale->SalesName);
-        $date = mysqli_real_escape_string($db, $newSale->Date);
+        $startdate = mysqli_real_escape_string($db, $newSale->StartDate);
+        $enddate = mysqli_real_escape_string($db, $newSale->EndDate);
         $userid = mysqli_real_escape_string($db, $newSale->CreatedBy);
 
-        $query = "INSERT INTO sales (`SalesId`, `SalesName`, `Date`, `CreatedAt`, `CreatedBy`) 
-        VALUES (DEFAULT,'$name', '$date', CURRENT_TIMESTAMP , '$userid')";
+
+        $query = "INSERT INTO sales (`SalesId`, `SalesName`, `StartDate`, `EndDate`, `CreatedAt`, `CreatedBy`) 
+        VALUES (DEFAULT,'$name', '$startdate', '$enddate', CURRENT_TIMESTAMP , '$userid')";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -90,10 +94,11 @@ class SalesData
         $db = Database::getInstance()->getConnection();
         $id = mysqli_real_escape_string($db, $sale->SalesId);
         $name = mysqli_real_escape_string($db, $sale->SalesName);
-        $date = mysqli_real_escape_string($db, $sale->Date);
+        $startdate = mysqli_real_escape_string($db, $sale->StartDate);
+        $enddate = mysqli_real_escape_string($db, $sale->EndDate);
         $userid = mysqli_real_escape_string($db, $sale->UpdatedBy);
 
-        $query = "UPDATE sales SET SalesName='$name', Date='$date', UpdatedBy='$userid', UpdatedAt=CURRENT_TIMESTAMP  WHERE SalesId='$id'";
+        $query = "UPDATE sales SET SalesName='$name', StartDate='$startdate', EndDate='$enddate', UpdatedBy='$userid', UpdatedAt=CURRENT_TIMESTAMP  WHERE SalesId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
