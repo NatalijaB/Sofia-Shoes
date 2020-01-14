@@ -24,7 +24,7 @@ $(document).ready(() => {
 
     // A D D I N G 
 
-    $('#addUsersBtn').click(() => {;
+    $('#addUsersBtn').on('click',() => {;
 
         let fname = $('#fname');
         let lname = $('#lname');
@@ -55,7 +55,7 @@ $(document).ready(() => {
         $('.updateUsers').show();
 
 
-        $('#updateUsersBtn').click(()=>{
+        $('#updateUsersBtn').off('click').on('click',()=>{
             usersId = window.localStorage.getItem('usersId');
             let serverUrl = `${urlUsers}/${usersId}`;
             
@@ -88,7 +88,7 @@ $(document).ready(() => {
         $('.delUsers').show();
     });
 
-    $('#delUsersBtn').click(() => {
+    $('#delUsersBtn').off('click').on('click', () => {
         
         usersId = window.localStorage.getItem('usersId');
         let serverUrl = `${urlUsers}/${usersId}`;
@@ -143,6 +143,7 @@ function ajaxGetUsers (id){
     $.ajax({
         url: `${urlUsers}/${id}`,
         success: ( resp )=>{
+            console.log(resp)
             
             fname = resp[0].FirstName;
             lname = resp[0].LastName;

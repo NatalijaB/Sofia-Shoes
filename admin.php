@@ -3,6 +3,7 @@ require_once 'PHP/config.php';
 require_once 'PHP/data/categories.php';
 require_once 'PHP/data/shoes.php';
 require_once 'PHP/data/users.php';
+require_once 'PHP/data/sales.php';
 
 if (!isset($_SESSION['username'])) {
     header("location: login.php");
@@ -26,6 +27,8 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+
 </head>
 
 <body>
@@ -69,13 +72,13 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeAddCat">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="catFormAdd">
                         <h2>Add Category:</h2>
                         <div class="form-group">
                             <label for="name">Category name:</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Write a name..." required>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Write a name..." required />
                         </div>
-                        <button id='addBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='addBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -88,13 +91,13 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeUpdateCat">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="catFormUpdate">
                         <h2>Update Category:</h2>
                         <div class="form-group">
                             <label for="updateName">Category name:</label>
                             <input type="text" class="form-control" id="updateName" name="updateName" required>
                         </div>
-                        <button id='updateBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='updateBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -108,7 +111,7 @@ if (!isset($_SESSION['username'])) {
                     </button>
                     <h4>Are you sure you want to delete this category?</h4>
                     <br><br><br>
-                    <button id="delBtn" type="button" class="btn btn-info">Delete</button>
+                    <button id="delBtn" type="submit" class="btn btn-info">Delete</button>
                 </div>
             </div>
         </div>
@@ -149,7 +152,7 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeAddShoes">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="shoesFormAdd">
                         <h2>Add Shoes:</h2>
                         <div class="form-group">
                             <label for="shoesName">Name:</label>
@@ -180,7 +183,7 @@ if (!isset($_SESSION['username'])) {
                             <label for="imgUrl">Image Url:</label>
                             <input class="form-control" type="text" id="imgUrl" name="ImgUrl" placeholder="Image Url" required>
                         </div>
-                        <button id='addShoesBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='addShoesBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -191,7 +194,7 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeUpdateShoes">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="shoesFormUpdate">
                         <h2>Update Shoes:</h2>
                         <div class="form-group">
                             <label for="updateShoesName">Name:</label>
@@ -222,7 +225,7 @@ if (!isset($_SESSION['username'])) {
                             <label for="updateImgUrl">Image Url:</label>
                             <input class="form-control" type="text" id="updateImgUrl" name="updateImgUrl" required>
                         </div>
-                        <button id='updateShoesBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='updateShoesBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -235,7 +238,7 @@ if (!isset($_SESSION['username'])) {
                     </button>
                     <h4>Are you sure you want to delete these shoes?</h4>
                     <br><br><br>
-                    <button id="delShoesBtn" type="button" class="btn btn-info">Delete</button>
+                    <button id="delShoesBtn" type="submit" class="btn btn-info">Delete</button>
                 </div>
             </div>
         </div>
@@ -248,7 +251,7 @@ if (!isset($_SESSION['username'])) {
 
     <section id="users">
         <div class="container m-auto p-5 myTable">
-            <h1>Sales:</h1>
+            <h1>Users:</h1>
             <table id="usersTable">
                 <thead>
                     <tr>
@@ -275,7 +278,7 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeAddUsers">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="usersFormAdd">
                         <h2>Add User:</h2>
                         <div class="form-group">
                             <label for="fname">First name:</label>
@@ -297,7 +300,7 @@ if (!isset($_SESSION['username'])) {
                             <label for="password">Password:</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                         </div>
-                        <button id='addUsersBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='addUsersBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -310,7 +313,7 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeUpdateUsers">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="usersFormUpdate">
                         <h2>Update User:</h2>
                         <div class="form-group">
                             <label for="updatefName">First name:</label>
@@ -332,7 +335,7 @@ if (!isset($_SESSION['username'])) {
                             <label for="updatePassword">Password:</label>
                             <input type="password" class="form-control" id="updatePassword" name="updatePassword" required>
                         </div>
-                        <button id='updateUsersBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='updateUsersBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -345,7 +348,7 @@ if (!isset($_SESSION['username'])) {
                     </button>
                     <h4>Are you sure you want to delete this user?</h4>
                     <br><br><br>
-                    <button id="delUsersBtn" type="button" class="btn btn-info">Delete</button>
+                    <button id="delUsersBtn" type="submit" class="btn btn-info">Delete</button>
                 </div>
             </div>
         </div>
@@ -357,7 +360,7 @@ if (!isset($_SESSION['username'])) {
 
     <section id="sales">
         <div class="container m-auto p-5 myTable">
-            <h1>Users:</h1>
+            <h1>Sales:</h1>
             <table id="salesTable">
                 <thead>
                     <tr>
@@ -367,6 +370,7 @@ if (!isset($_SESSION['username'])) {
                         <th>Created At:</th>
                         <th>Updated By:</th>
                         <th>Updated At:</th>
+                        <th>Add Products:</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -383,7 +387,7 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeAddSales">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
+                    <form id="salesFormAdd">
                         <h2>Add a Sale:</h2>
                         <div class="form-group">
                             <label for="sname">Name:</label>
@@ -391,9 +395,9 @@ if (!isset($_SESSION['username'])) {
                         </div>
                         <div class="form-group">
                             <label for="date">Expiration date:</label>
-                            <input type="date" class="form-control" id="date" name="date" placeholder="Date" required>
+                            <input type="date" class="form-control" id="date" name="date" required>
                         </div>
-                        <button id='addSalesBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='addSalesBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -406,8 +410,8 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeUpdateSales">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <form>
-                        <h2>Update User:</h2>
+                    <form id="salesFormUpdate">
+                        <h2>Update Sale:</h2>
                         <div class="form-group">
                             <label for="updatesName">Name:</label>
                             <input type="text" class="form-control" id="updatesName" name="updatesName" required>
@@ -416,7 +420,7 @@ if (!isset($_SESSION['username'])) {
                             <label for="updateDate">Date:</label>
                             <input type="text" class="form-control" id="updateDate" name="updateDate" required>
                         </div>
-                        <button id='updateSalesBtn' type="button" class="btn btn-info">Submit</button>
+                        <button id='updateSalesBtn' type="submit" class="btn btn-info">Submit</button>
                     </form>
                 </div>
             </div>
@@ -427,9 +431,22 @@ if (!isset($_SESSION['username'])) {
                     <button type="button" class="close" aria-label="Close" id="closeDelSales">
                         <span aria-hidden="true">&#10006;</span>
                     </button>
-                    <h4>Are you sure you want to delete this user?</h4>
+                    <h4>Are you sure you want to delete this sale?</h4>
                     <br><br><br>
-                    <button id="delSalesBtn" type="button" class="btn btn-info">Delete</button>
+                    <button id="delSalesBtn" type="submit" class="btn btn-info">Delete</button>
+                </div>
+            </div>
+
+            <div class="modal addItems">
+                <div class="modal-content">
+                    <button type="button" class="close" aria-label="Close" id="closeAddItems">
+                        <span aria-hidden="true">&#10006;</span>
+                    </button>
+                    <h4>Choose shoes for sale:</h4>
+                    <form id="items">
+                    </form>
+                    <button id="addItemsBtn" type="submit" class="btn btn-info">Submit</button>
+
                 </div>
             </div>
         </div>
@@ -441,6 +458,7 @@ if (!isset($_SESSION['username'])) {
     <script src="JS/categories.js"></script>
     <script src="JS/shoes.js"></script>
     <script src="JS/users.js"></script>
+    <script src="JS/sales.js"></script>
 </body>
 
 </html>

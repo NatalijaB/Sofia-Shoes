@@ -15,7 +15,7 @@
                         <a href="index.php" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Sale</a>
+                        <a href="sale.php" class="nav-link">Sale</a>
                     </li>';
                     if(isset($_SESSION['username'])){
                                         echo

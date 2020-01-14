@@ -1,16 +1,18 @@
+const url = '/sofia-shoes/shoes';
+const urlSale = '/sofia-shoes/shoesonsale/1';
+
 $(document).ready(() => {
-    getShoes();
-
-
-    // $('#order').change(()=>{
-    //     let selected = $('#order :selected')
-    // })
+    if(window.location.href == 'http://localhost/sofia-shoes/index.php'){
+        getShoes(url);
+    } else{
+        getShoes(urlSale)
+    }
 });
 
 
-function getShoes() {
+function getShoes(url) {
     $.ajax({
-        url: '/sofia-shoes/shoes',
+        url: url,
         success: (resp) => {
             let shoes = resp;
             shoes.forEach(e => {

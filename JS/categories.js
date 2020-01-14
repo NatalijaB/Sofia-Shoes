@@ -1,11 +1,12 @@
 const urlCat = '/sofia-shoes/categories';
-$(document).ready( ()=> {
+$(document).ready(() => {
+
     // L I S T I N G
 
     ajaxGetAllCat();
 
     // FORM DISPLAY (srediti)
-    $('#addCat').click(()=>{
+    $('#addCat').click(() => {
         $('.addCat').show();
     })
     $('#closeAddCat').click(() => {
@@ -23,17 +24,27 @@ $(document).ready( ()=> {
 
     // A D D I N G 
 
-    $('#addBtn').click(() => {
-        let serverUrl = urlCat;
-        let name = $('#name');
-        let data = {
-            'CatName': name.val().trim(),
-            'CreatedBy': userid,
-        };
-        ajaxPostCat(serverUrl, data);
-        console.log(data);
-        $('.addCat').hide();
+    $("#catFormAdd").validate({
+        rules: {
+            name: "required",
+        },
+        messages: {
+            firstname: "Please enter name of the category",
+        },
+        submitHandler: function (form) {
+            form.submit();
+            let serverUrl = urlCat;
+            let name = $('#name');
+            let data = {
+                'CatName': name.val().trim(),
+                'CreatedBy': userid,
+            };
+            ajaxPostCat(serverUrl, data);
+            console.log(data);
+            $('.addCat').hide();
+        }
     });
+
 
 
     // U P D A T I N G
@@ -44,25 +55,35 @@ $(document).ready( ()=> {
 
         window.localStorage.setItem('catId', this.dataset.id);
         catId = window.localStorage.getItem('catId');
+
         ajaxGetCat(catId);
 
         $('.updateCat').show();
     });
 
-    $('#updateBtn').click(() => {
-        
-        catId = window.localStorage.getItem('catId');
-        let serverUrl = `${urlCat}/${catId}`;
-        let updateName = $('#updateName');
-        let data = {
-            'CatName': updateName.val().trim(),
-            'CatId': catId,
-            'UpdatedBy': userid,
-        };
-        ajaxPostCat(serverUrl, data);
-        console.log(data);
-        $('.updateCat').hide();
-    })
+    $("#catFormUpdate").validate({
+        rules: {
+            updateName: "required",
+        },
+        messages: {
+            updateName: "Please enter name of the category",
+        },
+        submitHandler: function (form) {
+            form.submit();
+
+            catId = window.localStorage.getItem('catId');
+            let serverUrl = `${urlCat}/${catId}`;
+            let updateName = $('#updateName');
+            let data = {
+                'CatName': updateName.val().trim(),
+                'CatId': catId,
+                'UpdatedBy': userid,
+            };
+            ajaxPostCat(serverUrl, data);
+            console.log(data);
+            $('.updateCat').hide();
+        }
+    });
 
 
     // D E L E T I N G 
@@ -74,8 +95,8 @@ $(document).ready( ()=> {
         $('.delCat').show();
     });
 
-    $('#delBtn').click(() => {
-        
+    $('#delBtn').off('click').on('click', () => {
+
         catId = window.localStorage.getItem('catId');
         let serverUrl = `${urlCat}/${catId}`;
         let data = {
@@ -86,9 +107,9 @@ $(document).ready( ()=> {
         $('.delCat').hide();
     })
 
+})
 
 
-});
 
 
 
@@ -101,12 +122,12 @@ function ajaxPostCat(url, data) {
         type: 'POST',
         url: url,
         data: JSON.stringify(data),
-        dataType: "application/json",
+        dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: (resp) => {
             console.log(resp);
         },
-        error:(e) => {
+        error: (e) => {
             console.log(e);
         }
     });
@@ -142,17 +163,17 @@ function ajaxGetAllCat() {
     });
 }
 
-function ajaxDelCat (url, data){
+function ajaxDelCat(url, data) {
     $.ajax({
-        type:"DELETE",
+        type: "DELETE",
         url: url,
         data: JSON.stringify(data),
-        dataType: "application/json",
+        dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: (resp)=>{
+        success: (resp) => {
             console.log(resp);
         },
-        error: (e)=>{
+        error: (e) => {
             console.log(e)
         }
     })

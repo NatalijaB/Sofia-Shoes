@@ -4,6 +4,8 @@ require_once 'php/config.php';
 require_once 'php/data/categories.php';
 require_once 'php/data/shoes.php';
 require_once 'php/data/users.php';
+require_once 'php/data/sales.php';
+require_once 'php/data/shoesonsale.php';
 
 
 $response_messages = array(
@@ -65,63 +67,113 @@ if (!in_array($method, $supported_methods)) {
                             $response->data = UsersData::GetAllUsers();
                             $response->status = 200;
                         } else {
+                            if ($url_parts_counter == 1 and $url_parts[1] == "sales") {
 
-                            if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
-
-                                $id = intval($url_parts[2]);
-
-                                if ($id > 0) {
-
-                                    $category = CategoriesData::GetCategory($id);
-
-                                    if ($category == NULL) {
-                                        $response->status = 404;
-                                        $response->data = NULL;
-                                    } else {
-                                        $response->data = $category;
-                                        $response->status = 200;
-                                    }
-                                } else {
-                                    $response->status = 400;
-                                    $response->data = NULL;
-                                }
+                                $response->data = SalesData::GetAllSales();
+                                $response->status = 200;
                             } else {
-                                if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
+                                if ($url_parts_counter == 1 and $url_parts[1] == "shoesonsale") {
 
-                                    $id = intval($url_parts[2]);
-
-                                    if ($id > 0) {
-
-                                        $shoes = ShoesData::GetShoes($id);
-
-                                        if ($shoes == NULL) {
-                                            $response->status = 404;
-                                            $response->data = NULL;
-                                        } else {
-                                            $response->data = $shoes;
-                                            $response->status = 200;
-                                        }
-                                    } else {
-                                        $response->status = 400;
-                                        $response->data = NULL;
-                                    }
+                                    $response->data = ShoesOnSaleData::GetAllShoesOnSale();
+                                    $response->status = 200;
                                 } else {
-                                    if ($url_parts_counter == 2 and $url_parts[1] == "users") {
+
+                                    if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
 
                                         $id = intval($url_parts[2]);
 
                                         if ($id > 0) {
-                                            $user = USersData::GetUser($id);
-                                            if ($user == NULL) {
+
+                                            $category = CategoriesData::GetCategory($id);
+
+                                            if ($category == NULL) {
                                                 $response->status = 404;
                                                 $response->data = NULL;
                                             } else {
-                                                $response->data = $user;
+                                                $response->data = $category;
                                                 $response->status = 200;
                                             }
                                         } else {
                                             $response->status = 400;
                                             $response->data = NULL;
+                                        }
+                                    } else {
+                                        if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
+
+                                            $id = intval($url_parts[2]);
+
+                                            if ($id > 0) {
+
+                                                $shoes = ShoesData::GetShoes($id);
+
+                                                if ($shoes == NULL) {
+                                                    $response->status = 404;
+                                                    $response->data = NULL;
+                                                } else {
+                                                    $response->data = $shoes;
+                                                    $response->status = 200;
+                                                }
+                                            } else {
+                                                $response->status = 400;
+                                                $response->data = NULL;
+                                            }
+                                        } else {
+                                            if ($url_parts_counter == 2 and $url_parts[1] == "users") {
+
+                                                $id = intval($url_parts[2]);
+
+                                                if ($id > 0) {
+                                                    $user = USersData::GetUser($id);
+                                                    if ($user == NULL) {
+                                                        $response->status = 404;
+                                                        $response->data = NULL;
+                                                    } else {
+                                                        $response->data = $user;
+                                                        $response->status = 200;
+                                                    }
+                                                } else {
+                                                    $response->status = 400;
+                                                    $response->data = NULL;
+                                                }
+                                            } else {
+                                                if ($url_parts_counter == 2 and $url_parts[1] == "sales") {
+
+                                                    $id = intval($url_parts[2]);
+
+                                                    if ($id > 0) {
+                                                        $sale = SalesData::GetSale($id);
+                                                        if ($sale == NULL) {
+                                                            $response->status = 404;
+                                                            $response->data = NULL;
+                                                        } else {
+                                                            $response->data = $sale;
+                                                            $response->status = 200;
+                                                        }
+                                                    } else {
+                                                        $response->status = 400;
+                                                        $response->data = NULL;
+                                                    }
+                                                } else {
+                                                    if ($url_parts_counter == 2 and $url_parts[1] == "shoesonsale") {
+
+                                                        $id = intval($url_parts[2]);
+
+                                                        if ($id > 0) {
+                                                            $shoesonsale = ShoesOnSaleData::GetShoesOnSale($id);
+                                                            if ($shoesonsale == NULL) {
+                                                                $response->status = 404;
+                                                                $response->data = NULL;
+                                                            } else {
+                                                                $response->data = $shoesonsale;
+                                                                $response->status = 200;
+                                                            }
+                                                        } else {
+                                                            $response->status = 400;
+                                                            $response->data = NULL;
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -142,7 +194,7 @@ if (!in_array($method, $supported_methods)) {
                     } else {
                         $id = CategoriesData::AddCategory($data);
 
-                        if ($id == -1) {
+                        if ($id === 0) {
                             $response->status = 400;
                             $response->data = NULL;
                         } else {
@@ -155,14 +207,14 @@ if (!in_array($method, $supported_methods)) {
 
                         $data = json_decode(file_get_contents("php://input"));
 
-                        if (!isset($data->ShoesName) and !isset($data->Passcode) and !isset($data->Description) and !isset($data->Price) and !isset($data->Size) and !isset($data->ImgUrl) and !isset($data->Category)) {
+                        if (!isset($data->ShoesName) or !isset($data->Passcode) or !isset($data->Description) or !isset($data->Price) or !isset($data->Size) or !isset($data->ImgUrl) or !isset($data->Category)) {
 
                             $response->status = 400;
                             $response->data = NULL;
                         } else {
                             $id = ShoesData::AddShoes($data);
 
-                            if ($id == -1) {
+                            if ($id === 0) {
                                 $response->status = 400;
                                 $response->data = NULL;
                             } else {
@@ -181,7 +233,7 @@ if (!in_array($method, $supported_methods)) {
                             } else {
                                 $id = UsersData::AddUser($data);
 
-                                if ($id == -1) {
+                                if ($id === 0) {
                                     $response->status = 400;
                                     $response->data = NULL;
                                 } else {
@@ -190,17 +242,17 @@ if (!in_array($method, $supported_methods)) {
                                 }
                             }
                         } else {
-                            if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
+                            if ($url_parts_counter == 1 and $url_parts[1] == "sales") {
 
                                 $data = json_decode(file_get_contents("php://input"));
 
-                                if (!isset($data->CatId) and !isset($data->CatName) and !isset($data->UpdatedBy)) {
+                                if (!isset($data->SalesName) and !isset($data->Date) and !isset($data->CreatedBy)) {
                                     $response->status = 400;
                                     $response->data = NULL;
                                 } else {
-                                    $id = CategoriesData::UpdateCategory($data);
+                                    $id = SalesData::AddSale($data);
 
-                                    if ($id == -1) {
+                                    if ($id === 0) {
                                         $response->status = 400;
                                         $response->data = NULL;
                                     } else {
@@ -209,17 +261,17 @@ if (!in_array($method, $supported_methods)) {
                                     }
                                 }
                             } else {
-                                if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
+                                if ($url_parts_counter == 1 and $url_parts[1] == "shoesonsale") {
 
                                     $data = json_decode(file_get_contents("php://input"));
 
-                                    if (!isset($data->ShoesId) and !isset($data->ShoesName) and !isset($data->Price) and !isset($data->Description) and !isset($data->Size) and !isset($data->Passcode) and !isset($data->ImgUrl) and !isset($data->Category) and !isset($data->UpdatedBy)) {
+                                    if (!isset($data)) {
                                         $response->status = 400;
                                         $response->data = NULL;
                                     } else {
-                                        $id = ShoesData::UpdateShoes($data);
+                                        $id = ShoesOnSaleData::AddShoesOnSale($data);
 
-                                        if ($id == -1) {
+                                        if ($id === 0) {
                                             $response->status = 400;
                                             $response->data = NULL;
                                         } else {
@@ -228,17 +280,18 @@ if (!in_array($method, $supported_methods)) {
                                         }
                                     }
                                 } else {
-                                    if ($url_parts_counter == 2 and $url_parts[1] == "users") {
+
+                                    if ($url_parts_counter == 2 and $url_parts[1] == "categories") {
 
                                         $data = json_decode(file_get_contents("php://input"));
 
-                                        if (!isset($data->UsersId) and !isset($data->FirstName) and !isset($data->LastName) and !isset($data->Username) and !isset($data->Email) and !isset($data->Password) and !isset($data->UpdatedBy)) {
+                                        if (!isset($data->CatId) or !isset($data->CatName) or !isset($data->UpdatedBy)) {
                                             $response->status = 400;
                                             $response->data = NULL;
                                         } else {
-                                            $id = UsersData::UpdateUser($data);
+                                            $id = CategoriesData::UpdateCategory($data);
 
-                                            if ($id == -1) {
+                                            if ($id === 0) {
                                                 $response->status = 400;
                                                 $response->data = NULL;
                                             } else {
@@ -247,8 +300,68 @@ if (!in_array($method, $supported_methods)) {
                                             }
                                         }
                                     } else {
-                                        $response->status = 400;
-                                        $response->data = NULL;
+                                        if ($url_parts_counter == 2 and $url_parts[1] == "shoes") {
+
+                                            $data = json_decode(file_get_contents("php://input"));
+
+                                            if (!isset($data->ShoesId) or !isset($data->ShoesName) or !isset($data->Price) or !isset($data->Description) or !isset($data->Size) or !isset($data->Passcode) or !isset($data->ImgUrl) or !isset($data->Category) or !isset($data->UpdatedBy)) {
+                                                $response->status = 400;
+                                                $response->data = NULL;
+                                            } else {
+                                                $id = ShoesData::UpdateShoes($data);
+
+                                                if ($id === 0) {
+                                                    $response->status = 400;
+                                                    $response->data = NULL;
+                                                } else {
+                                                    $response->data = $id;
+                                                    $response->status = 201;
+                                                }
+                                            }
+                                        } else {
+                                            if ($url_parts_counter == 2 and $url_parts[1] == "users") {
+
+                                                $data = json_decode(file_get_contents("php://input"));
+
+                                                if (!isset($data->UsersId) or !isset($data->FirstName) or !isset($data->LastName) or !isset($data->Username) or !isset($data->Email) or !isset($data->Password) or !isset($data->UpdatedBy)) {
+                                                    $response->status = 400;
+                                                    $response->data = NULL;
+                                                } else {
+                                                    $id = UsersData::UpdateUser($data);
+
+                                                    if ($id === 0) {
+                                                        $response->status = 400;
+                                                        $response->data = NULL;
+                                                    } else {
+                                                        $response->data = $id;
+                                                        $response->status = 201;
+                                                    }
+                                                }
+                                            } else {
+                                                if ($url_parts_counter == 2 and $url_parts[1] == "sales") {
+
+                                                    $data = json_decode(file_get_contents("php://input"));
+
+                                                    if (!isset($data->SalesId) or !isset($data->Date) and !isset($data->UpdatedBy)) {
+                                                        $response->status = 400;
+                                                        $response->data = NULL;
+                                                    } else {
+                                                        $id = SalesData::UpdateSale($data);
+
+                                                        if ($id === 0) {
+                                                            $response->status = 400;
+                                                            $response->data = NULL;
+                                                        } else {
+                                                            $response->data = $id;
+                                                            $response->status = 201;
+                                                        }
+                                                    }
+                                                } else {
+                                                    $response->status = 400;
+                                                    $response->data = NULL;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -267,7 +380,7 @@ if (!in_array($method, $supported_methods)) {
 
                     $isDeleted = CategoriesData::DeleteCategory($data);
 
-                    if ($id == -1) {
+                    if ($id == 0) {
                         $response->status = 400;
                         $response->data = NULL;
                     } else {
@@ -284,7 +397,7 @@ if (!in_array($method, $supported_methods)) {
 
                         $isDeleted = ShoesData::DeleteShoes($data);
 
-                        if ($id == -1) {
+                        if ($id == 0) {
                             $response->status = 400;
                             $response->data = NULL;
                         } else {
@@ -302,12 +415,31 @@ if (!in_array($method, $supported_methods)) {
 
                             $isDeleted = UsersData::DeleteUser($data);
 
-                            if ($id == -1) {
+                            if ($id == 0) {
                                 $response->status = 400;
                                 $response->data = NULL;
                             } else {
                                 $response->data = $isDeleted;
                                 $response->status = 201;
+                            }
+                        } else {
+                            if ($url_parts_counter == 2 and $url_parts[1] == "sales") {
+
+
+                                $id = intval($url_parts[2]);
+
+
+                                $data = json_decode(file_get_contents("php://input"));
+
+                                $isDeleted = SalesData::DeleteSale($data);
+
+                                if ($id == 0) {
+                                    $response->status = 400;
+                                    $response->data = NULL;
+                                } else {
+                                    $response->data = $isDeleted;
+                                    $response->status = 201;
+                                }
                             }
                         }
                     }
@@ -324,7 +456,7 @@ if (!in_array($method, $supported_methods)) {
     header("HTTP/1.1 " . $response->status . " " . $response->message);
 
 
-    header("Content-Type: application/json");
+    header("Content-Type: application/json; charset=utf-8");
 
     if ($response->data != NULL) {
 

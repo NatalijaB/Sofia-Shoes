@@ -1,11 +1,11 @@
 const urlSales = '/sofia-shoes/sales';
-$(document).ready( ()=> {
+$(document).ready(() => {
     // L I S T I N G
 
     ajaxGetAllSales();
 
     // FORM DISPLAY (srediti)
-    $('#addSales').click(()=>{
+    $('#addSales').click(() => {
         $('.addSales').show();
     })
     $('#closeAddSales').click(() => {
@@ -14,20 +14,25 @@ $(document).ready( ()=> {
 
     $('#closeUpdateSales').click(() => {
         $('.updateSales').hide();
-    })
+    });
     $('#closeDelSales').click(() => {
         $('.delSales').hide();
-    })
+    });
+    $('#closeAddItems').click(() => {
+        $('.addItems').hide();
+    });
 
 
 
     // A D D I N G 
 
-    $('#addSalesBtn').click(() => {
+    $('#addSalesBtn').on('click', () => {
         let serverUrl = urlSales;
         let name = $('#sname');
+        let date = $('#date');
         let data = {
             'SalesName': name.val().trim(),
+            'Date': date.val(),
             'CreatedBy': userid,
         };
         ajaxPostSales(serverUrl, data);
@@ -49,14 +54,16 @@ $(document).ready( ()=> {
         $('.updateSales').show();
     });
 
-    $('#updateSalesBtn').click(() => {
-        
+    $('#updateSalesBtn').off('click').on('click', () => {
+
         salesId = window.localStorage.getItem('salesId');
         let serverUrl = `${urlSales}/${salesId}`;
         let updateName = $('#updatesName');
+        let updateDate = $('#updateDate');
         let data = {
             'SalesName': updateName.val().trim(),
-            'SalesId': saleid,
+            'Date': updateDate.val(),
+            'SalesId': salesId,
             'UpdatedBy': userid,
         };
         ajaxPostSales(serverUrl, data);
@@ -74,43 +81,53 @@ $(document).ready( ()=> {
         $('.delSales').show();
     });
 
-    $('#delSalesBtn').click(() => {
-        
+    $('#delSalesBtn').off('click').on('click', () => {
+
         salesId = window.localStorage.getItem('salesId');
         let serverUrl = `${urlSales}/${salesId}`;
         let data = {
             'DeletedBy': userid,
-            'SalesId': catId,
+            'SalesId': salesId,
         }
         ajaxDelSales(serverUrl, data);
         $('.delSales').hide();
     })
 
 
+    // ADDING SHOES FOR SALE
+
+    $(document).on('click', '.sales-add', function () {
+
+        window.localStorage.setItem('salesId', this.dataset.id);
+        salesId = window.localStorage.getItem('salesId');
+
+        $('.addItems').show();
+
+        $('#addItemsBtn').off('click').on('click', () => {
+
+            let form = document.forms[8];
+            let data = [];
+
+            for (let i = 0; i < form.length; i++) {
+                if (form[i].checked) {
+                    data.push({
+                        'SalesId': salesId,
+                        'ShoesId': form[i].value
+                    })
+                }
+            }
+            
+            ajaxShoesOnSale(data)
+            console.log(data)
+            $('.addItems').hide();
+        })
+    })
 
 });
 
 
 
 // functions
-
-
-function ajaxPostSales(url, data) {
-
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: JSON.stringify(data),
-        dataType: "application/json",
-        contentType: "application/json; charset=utf-8",
-        success: (resp) => {
-            console.log(resp);
-        },
-        error:(e) => {
-            console.log(e);
-        }
-    });
-}
 
 
 function ajaxGetSales(id) {
@@ -120,7 +137,9 @@ function ajaxGetSales(id) {
         success: (resp) => {
             console.log(resp)
             name = resp[0].SalesName;
-            $('#updateName').val(name);
+            date = resp[0].Date;
+            $('#updatesName').val(name);
+            $('#updateDate').val(date);
         }
     })
 }
@@ -139,26 +158,60 @@ function ajaxGetAllSales() {
         }
     });
 }
+function ajaxPostSales(url, data) {
 
-function ajaxDelSales (url, data){
     $.ajax({
-        type:"DELETE",
+        type: 'POST',
         url: url,
         data: JSON.stringify(data),
         dataType: "application/json",
         contentType: "application/json; charset=utf-8",
-        success: (resp)=>{
+        success: (resp) => {
             console.log(resp);
         },
-        error: (e)=>{
+        error: (e) => {
+            console.log(e);
+        }
+    });
+}
+
+
+
+function ajaxDelSales(url, data) {
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        data: JSON.stringify(data),
+        dataType: "application/json",
+        contentType: "application/json; charset=utf-8",
+        success: (resp) => {
+            console.log(resp);
+        },
+        error: (e) => {
             console.log(e)
         }
     })
 }
 
+function ajaxShoesOnSale(data){
+    $.ajax({
+        type: 'POST',
+        url: '/sofia-shoes/shoesonsale',
+        data: JSON.stringify(data),
+        dataType: "application/json",
+        contentType: "application/json; charset=utf-8",
+        success: (resp) => {
+            console.log(resp);
+        },
+        error: (e) => {
+            console.log(e);
+        }
+    });
+}
+
 
 function createSales(name, date, id, cUsername, cDate, uUsername, uDate) {
-    let category =
+    let sales =
         `
         <tr>
         <td>${name}</td>
@@ -167,9 +220,10 @@ function createSales(name, date, id, cUsername, cDate, uUsername, uDate) {
         <td>${cDate}</td>
         <td>${uUsername}</td>
         <td>${uDate}</td>
+        <td><i data-id="${id}" class="fa fa-plus-circle fa-2x sales-add"></i></td>
         <td><i data-id="${id}" class="fa fa-edit fa-2x sales-edit"></i></td>
         <td><i data-id="${id}" class="fa fa-trash fa-2x sales-del"></i></td>
         </tr>
         `
-    return category;
+    return sales;
 }

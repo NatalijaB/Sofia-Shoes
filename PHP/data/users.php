@@ -98,12 +98,12 @@ class UsersData
         $id = $updateUser->UsersId;
         $fname = $updateUser->FirstName;
         $lname = $updateUser->LastName;
-        $email = $updateUser->email;
+        $email = $updateUser->Email;
         $password = $updateUser->Password;
         $username = $updateUser->Username;
         $userid = $updateUser->UpdatedBy;
 
-        $query = "UPDATE users SET FirstName='$fname', LastName='$lname', email='$email', Username='$username', Password='$password', UpdatedAt= CURRENT_TIMESTAMP, UpdatedBy='$userid' WHERE UsersId='$id'";
+        $query = "UPDATE users SET FirstName='$fname', LastName='$lname', Email='$email', Username='$username', Password='$password', UpdatedAt= CURRENT_TIMESTAMP, UpdatedBy='$userid' WHERE UsersId='$id'";
 
         $result = mysqli_query($db, $query);
         if ($result) {

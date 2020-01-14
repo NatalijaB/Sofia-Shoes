@@ -24,7 +24,7 @@ $(document).ready(() => {
 
     // A D D I N G 
 
-    $('#addShoesBtn').click(() => {
+    $('#addShoesBtn').on('click', () => {
         let name = $('#shoesName');
         let description = $('#description');
         let price = $('#price');
@@ -58,7 +58,7 @@ $(document).ready(() => {
         $('.updateShoes').show();
 
 
-        $('#updateShoesBtn').click(() => {
+        $('#updateShoesBtn').off('click').on('click' ,() => {
             shoesId = window.localStorage.getItem('shoesId');
             let serverUrl = `${urlShoes}/${shoesId}`;
 
@@ -95,7 +95,7 @@ $(document).ready(() => {
         $('.delShoes').show();
     });
 
-    $('#delShoesBtn').click(() => {
+    $('#delShoesBtn').off('click').on('click', () => {
         shoesId = window.localStorage.getItem('shoesId');
         let serverUrl = `${urlShoes}/${shoesId}`;
         let data = {
@@ -137,6 +137,9 @@ function ajaxGetAllShoes() {
             shoes.forEach(e => {
                 let tableContent = createShoes(e.ShoesName, e.Description, e.Price, e.Size, e.CategoryName, e.ShoesId, e.cUsername, e.cDate, e.uDate, e.uUsername);
                 $('#shoesTableBody').append(tableContent);
+
+                let formContent = itemsForSale(e.ShoesId, e.ShoesName,)
+                $('#items').append(formContent);
             });
             $('#shoesTable').DataTable();
         }
@@ -200,5 +203,16 @@ function createShoes(name, description, price, size, categoryName, id, cUsername
         <td><i data-id="${id}" class="fa fa-trash fa-2x shoes-del"></i></td>
         </tr>
         `
+    return shoes;
+}
+
+function itemsForSale(id, name){
+    let shoes = 
+    `
+    <div class="form-group">
+        <label for="${name}">${name}</label>
+        <input class="form-control" type="checkbox" name="items" value="${id}"">
+    </div>`
+
     return shoes;
 }

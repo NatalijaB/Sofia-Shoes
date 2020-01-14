@@ -30,17 +30,17 @@ class ShoesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $query = "SELECT h.*, c.CatName as CategoryName, c.CatId as CatId, u.Username as cUsername, s.Username as uUsername,
-        DATE_FORMAT(DATE(s.CreatedAt), '%D %M %Y') as cDate,
-        DATE_FORMAT(DATE(s.UpdatedAt), '%D %M %Y') as uDate
-        FROM shoes as h
+        $query = "SELECT sh.*, c.CatName as CategoryName, c.CatId as CatId, u.Username as cUsername, s.Username as uUsername,
+        DATE_FORMAT(DATE(sh.CreatedAt), '%D %M %Y') as cDate,
+        DATE_FORMAT(DATE(sh.UpdatedAt), '%D %M %Y') as uDate
+        FROM shoes as sh
         JOIN categories as c
-        ON c.CatId = h.Category
-        JOIN users as u
-        ON h.CreatedBy = u.UsersId
+        ON c.CatId = sh.Category
+        LEFT JOIN users as u
+        ON sh.CreatedBy = u.UsersId
         LEFT JOIN users as s
-        ON h.UpdatedBy = s.UsersId
-        WHERE s.isDeleted='0'";
+        ON sh.UpdatedBy = s.UsersId
+        WHERE sh.isDeleted='0'";
 
         $result = mysqli_query($db, $query);
         if ($result) {
@@ -80,7 +80,7 @@ class ShoesData
     {
         $db = Database::getInstance()->getConnection();
         $passcode = $newShoes->Passcode;
-        $name = $newShoes->Name;
+        $name = $newShoes->ShoesName;
         $description = $newShoes->Description;
         $price = $newShoes->Price;
         $size = $newShoes->Size;
@@ -89,7 +89,7 @@ class ShoesData
         $usersid = $newShoes->CreatedBy;
 
         $query = "INSERT INTO shoes (`ShoesId`, `Passcode`, `ShoesName`, `Description`, `Price`, `Size`, `ImgUrl`, `Category`, `CreatedAt`, `CreatedBy`) 
-        VALUES (DEFAULT,'$passcode', '$name', '$description', '$price', '$size', '$imgUrl', '$category', CURRENT_TIMESTAMP, '$usersid')";
+        VALUES (DEFAULT , '$passcode', '$name', '$description', '$price', '$size', '$imgUrl', '$category', CURRENT_TIMESTAMP, '$usersid')";
 
         $result = mysqli_query($db, $query);
         if ($result) {
