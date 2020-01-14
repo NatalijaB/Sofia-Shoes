@@ -23,7 +23,7 @@ class ShoesData
         $this->category = $category;
     }
 
-    //listing
+    //L I S T I N G
 
 
     public static function GetAllShoes()
@@ -54,7 +54,7 @@ class ShoesData
         }
     }
 
-    // list one 
+    // L I S T   O N E 
     public static function GetShoes($id)
     {
         $db = Database::getInstance()->getConnection();
@@ -74,19 +74,20 @@ class ShoesData
     }
 
 
-    //adding
+    //A D D I N G
 
     public static function AddShoes($newShoes)
     {
         $db = Database::getInstance()->getConnection();
-        $passcode = $newShoes->Passcode;
-        $name = $newShoes->ShoesName;
-        $description = $newShoes->Description;
-        $price = $newShoes->Price;
-        $size = $newShoes->Size;
-        $imgUrl = $newShoes->ImgUrl;
-        $category = $newShoes->Category;
-        $usersid = $newShoes->CreatedBy;
+        
+        $passcode = mysqli_real_escape_string($db, $newShoes->Passcode);
+        $name = mysqli_real_escape_string($db, $newShoes->ShoesName);
+        $description = mysqli_real_escape_string($db, $newShoes->Description);
+        $price = mysqli_real_escape_string($db, $newShoes->Price);
+        $size = mysqli_real_escape_string($db, $newShoes->Size);
+        $imgUrl = mysqli_real_escape_string($db, $newShoes->ImgUrl);
+        $category = mysqli_real_escape_string($db, $newShoes->Category);
+        $usersid = mysqli_real_escape_string($db, $newShoes->CreatedBy);
 
         $query = "INSERT INTO shoes (`ShoesId`, `Passcode`, `ShoesName`, `Description`, `Price`, `Size`, `ImgUrl`, `Category`, `CreatedAt`, `CreatedBy`) 
         VALUES (DEFAULT , '$passcode', '$name', '$description', '$price', '$size', '$imgUrl', '$category', CURRENT_TIMESTAMP, '$usersid')";
@@ -100,21 +101,21 @@ class ShoesData
     }
 
 
-    // updating
+    // U P D A T I N G
 
     public static function UpdateShoes($data)
     {
         $db = Database::getInstance()->getConnection();
 
-        $id = $data->ShoesId;
-        $passcode = $data->Passcode;
-        $name = $data->ShoesName;
-        $price = $data->Price;
-        $description = $data->Description;
-        $size = $data->Size;
-        $imgUrl = $data->ImgUrl;
-        $category = $data->Category;
-        $usersid = $data->UpdatedBy;
+        $id = mysqli_real_escape_string($db, $data->ShoesId);
+        $passcode = mysqli_real_escape_string($db, $data->Passcode);
+        $name = mysqli_real_escape_string($db, $data->ShoesName);
+        $price = mysqli_real_escape_string($db, $data->Price);
+        $description = mysqli_real_escape_string($db, $data->Description);
+        $size = mysqli_real_escape_string($db, $data->Size);
+        $imgUrl = mysqli_real_escape_string($db, $data->ImgUrl);
+        $category = mysqli_real_escape_string($db, $data->Category);
+        $usersid = mysqli_real_escape_string($db, $data->UpdatedBy);
  	
         $query = "UPDATE shoes SET Passcode='$passcode', ShoesName='$name', Description='$description', Price='$price', Size='$size', ImgUrl='$imgUrl', Category='$category', UpdatedAt=CURRENT_TIMESTAMP, UpdatedBy='$usersid' WHERE ShoesId='$id'";
 
@@ -132,8 +133,8 @@ class ShoesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $id = $data->Id;
-        $usersid = $data->DeletedBy;
+        $id = mysqli_real_escape_string($db, $data->Id);
+        $usersid = mysqli_real_escape_string($db, $data->DeletedBy);
 
         $query = "UPDATE shoes SET isDeleted='1', DeletedAt=CURRENT_TIMESTAMP, DeletedBy='$usersid' WHERE ShoesId='$id'";
 
@@ -145,25 +146,25 @@ class ShoesData
         }
     }
 
-    // O R D E R I N G
+     // O R D E R I N G
 
-    public static function OrderShoes($criteria)
-    {
-        $db = Database::getInstance()->getConnection();
+    // public static function OrderShoes($criteria)
+    // {
+    //     $db = Database::getInstance()->getConnection();
 
-        $criteria = $criteria->Criteria;
+    //     $criteria = $criteria->Criteria;
 
-        $query = "SELECT * FROM shoes ORDER BY '$criteria'";
+    //     $query = "SELECT * FROM shoes ORDER BY '$criteria'";
 
-        $result = mysqli_query($db, $query);
-        if ($result) {
-            $data = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $data[] = $row;
-            }
-            return $data;
-        } else {
-            return [];
-        }
-    }
+    //     $result = mysqli_query($db, $query);
+    //     if ($result) {
+    //         $data = [];
+    //         while ($row = mysqli_fetch_assoc($result)) {
+    //             $data[] = $row;
+    //         }
+    //         return $data;
+    //     } else {
+    //         return [];
+    //     }
+    // }
 }

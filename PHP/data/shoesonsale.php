@@ -12,7 +12,7 @@ class ShoesOnSaleData
         $this->shoes = $shoes;
     }
 
-    //L I S T I N G
+    // L I S T I N G
 
     public static function GetAllShoesOnSale()
     {
@@ -58,15 +58,19 @@ class ShoesOnSaleData
     }
 
 
-    //A D D I N G
+    // A D D I N G
 
     public static function AddShoesOnSale($data)
     {
         $db = Database::getInstance()->getConnection();
 
         foreach ($data as $value) {
+
+            $salesId = mysqli_real_escape_string($db, $value->SalesId);
+            $shoesId = mysqli_real_escape_string($db, $value->ShoesId);
+            
             $query = "INSERT INTO shoesonsale (`SalesId`, `ShoesId`) 
-            VALUES ('$value->SalesId', '$value->ShoesId')";
+            VALUES ('$salesId', '$shoesId')";
 
             mysqli_query($db, $query);
         }

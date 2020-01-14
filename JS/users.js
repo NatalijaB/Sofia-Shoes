@@ -8,15 +8,15 @@ $(document).ready(() => {
 
     // FORM DISPLAY (srediti)
 
-    $('#addUsers').click(()=>{
+    $('#addUsers').click(() => {
         $('.addUsers').show();
     })
 
-    $('#closeAddUsers').click(()=>{
+    $('#closeAddUsers').click(() => {
         $('.addUsers').hide();
     });
 
-    $('#closeUpdateUsers').click(()=>{
+    $('#closeUpdateUsers').click(() => {
         $('.updateUsers').hide();
     })
 
@@ -24,59 +24,99 @@ $(document).ready(() => {
 
     // A D D I N G 
 
-    $('#addUsersBtn').on('click',() => {;
+    $("#usersFormAdd").validate({
+        rules: {
+            fname: "required",
+            lname: "required",
+            username: "required",
+            email: {
+                required: true,
+                email: true
+            },
+            password: "required",
+        },
+        messages: {
+            sname: "Please enter first name",
+            sname: "Please enter last name",
+            username: "Please enter username",
+            email: "Please enter a valid email",
+            password: "Please provide a password",
+        },
+        submitHandler: function (form) {
+            form.submit();
 
-        let fname = $('#fname');
-        let lname = $('#lname');
-        let username = $('#username');
-        let email = $('#email');
-        let password = $('#password');
-        let data = {
-            'FirstName': fname.val().trim(),
-            'LastName': lname.val().trim(),
-            'Username': username.val().trim(),
-            'Email': email.val().trim(),
-            'Password': password.val().trim(),
-            'CreatedBy': userid,
-        };
-        ajaxPostUsers(urlUsers, data);
-        console.log(data);
-        $('.addUsers').hide();
+            let fname = $('#fname');
+            let lname = $('#lname');
+            let username = $('#username');
+            let email = $('#email');
+            let password = $('#password');
+            let data = {
+                'FirstName': fname.val().trim(),
+                'LastName': lname.val().trim(),
+                'Username': username.val().trim(),
+                'Email': email.val().trim(),
+                'Password': password.val().trim(),
+                'CreatedBy': userid,
+            };
+            ajaxPostUsers(urlUsers, data);
+            console.log(data);
+            $('.addUsers').hide();
+        }
     });
+
 
 
     // U P D A T I N G
     let usersId;
     $(document).on('click', '.users-edit', function () {
-        
+
         window.localStorage.setItem('usersId', this.dataset.id);
         usersId = window.localStorage.getItem('usersId');
         ajaxGetUsers(usersId);
         $('.updateUsers').show();
 
+        $("#usersFormUpdate").validate({
+            rules: {
+                updateFname: "required",
+                updateLname: "required",
+                updateUsername: "required",
+                updateEmail: {
+                    required: true,
+                    email: true
+                },
+                updatePassword: "required",
+            },
+            messages: {
+                updateFname: "Please enter first name",
+                updateLname: "Please enter last name",
+                updateUsername: "Please enter username",
+                updateEmail: "Please enter a valid email",
+                updatePassword: "Please provide a password",
+            },
+            submitHandler: function (form) {
+                form.submit();
+                usersId = window.localStorage.getItem('usersId');
+                let serverUrl = `${urlUsers}/${usersId}`;
 
-        $('#updateUsersBtn').off('click').on('click',()=>{
-            usersId = window.localStorage.getItem('usersId');
-            let serverUrl = `${urlUsers}/${usersId}`;
-            
-            let updatefName = $('#updatefName');
-            let updatelName = $('#updatelName');
-            let updateUsername = $('#updateUsername');
-            let updateEmail = $('#updateEmail');
-            let updatePassword = $('#updatePassword');
-            let data = {
-                'UsersId': usersId,
-                'FirstName': updatefName.val().trim(),
-                'LastName': updatelName.val().trim(),
-                'Username': updateUsername.val().trim(),
-                'Email': updateEmail.val().trim(),
-                'Password': updatePassword.val().trim(),
-                'UpdatedBy': userid,
-            };
-            ajaxPostUsers(serverUrl, data);
-            console.log(data)
-            $('.updateUsers').hide();
-        })
+                let updatefName = $('#updatefName');
+                let updatelName = $('#updatelName');
+                let updateUsername = $('#updateUsername');
+                let updateEmail = $('#updateEmail');
+                let updatePassword = $('#updatePassword');
+                let data = {
+                    'UsersId': usersId,
+                    'FirstName': updatefName.val().trim(),
+                    'LastName': updatelName.val().trim(),
+                    'Username': updateUsername.val().trim(),
+                    'Email': updateEmail.val().trim(),
+                    'Password': updatePassword.val().trim(),
+                    'UpdatedBy': userid,
+                };
+                ajaxPostUsers(serverUrl, data);
+                console.log(data)
+                $('.updateUsers').hide();
+            }
+        });
     });
 
     // D E L E T I N G 
@@ -89,14 +129,14 @@ $(document).ready(() => {
     });
 
     $('#delUsersBtn').off('click').on('click', () => {
-        
+
         usersId = window.localStorage.getItem('usersId');
         let serverUrl = `${urlUsers}/${usersId}`;
         let data = {
-            'Id':usersId,
+            'Id': usersId,
             'DeletedBy': userid,
         }
-        ajaxDelUsers(serverUrl,data);
+        ajaxDelUsers(serverUrl, data);
         $('.delUsers').hide();
     })
 
@@ -107,7 +147,7 @@ $(document).ready(() => {
 // functions
 
 
-function ajaxPostUsers (url, data){
+function ajaxPostUsers(url, data) {
 
     $.ajax({
         type: 'POST',
@@ -124,7 +164,7 @@ function ajaxPostUsers (url, data){
     });
 }
 
-function ajaxGetAllUsers(){
+function ajaxGetAllUsers() {
     $.ajax({
         url: urlUsers,
         success: function (resp) {
@@ -138,13 +178,13 @@ function ajaxGetAllUsers(){
     });
 }
 
-function ajaxGetUsers (id){
+function ajaxGetUsers(id) {
 
     $.ajax({
         url: `${urlUsers}/${id}`,
-        success: ( resp )=>{
+        success: (resp) => {
             console.log(resp)
-            
+
             fname = resp[0].FirstName;
             lname = resp[0].LastName;
             username = resp[0].Username;
@@ -161,17 +201,17 @@ function ajaxGetUsers (id){
     })
 }
 
-function ajaxDelUsers (url, data){
+function ajaxDelUsers(url, data) {
     $.ajax({
-        type:"DELETE",
+        type: "DELETE",
         url: url,
         data: JSON.stringify(data),
         dataType: "application/json",
         contentType: "application/json; charset=utf-8",
-        success: (resp)=>{
+        success: (resp) => {
             console.log(resp);
         },
-        error: (e)=>{
+        error: (e) => {
             console.log(e)
         }
     })

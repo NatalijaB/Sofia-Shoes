@@ -19,7 +19,7 @@ class UsersData
         $this->password = $password;
     }
 
-    //listing 
+    // L I S T I N G 
     public static function GetAllUsers()
     {
         $db = Database::getInstance()->getConnection();
@@ -45,7 +45,7 @@ class UsersData
         }
     }
 
-    // list one
+    // L I S T   O N E
     public static function GetUser($id)
     {
         $db = Database::getInstance()->getConnection();
@@ -65,18 +65,18 @@ class UsersData
 
 
 
-    //adding
+    // A D D I N G
 
     public static function AddUser($newUser)
     {
         $db = Database::getInstance()->getConnection();
 
-        $fname = $newUser->FirstName;
-        $lname = $newUser->LastName;
-        $email = $newUser->Email;
-        $username = $newUser->Username;
-        $password = $newUser->Password;
-        $userid = $newUser->CreatedBy;
+        $fname = mysqli_escape_string($db, $newUser->FirstName);
+        $lname = mysqli_escape_string($db, $newUser->LastName);
+        $email = mysqli_escape_string($db, $newUser->Email);
+        $username = mysqli_escape_string($db, $newUser->Username);
+        $password = mysqli_escape_string($db, $newUser->Password);
+        $userid = mysqli_escape_string($db, $newUser->CreatedBy);
 
         $query = "INSERT INTO users (`UsersId`, `FirstName`, `LastName`, `email`, `Username`, `password`, `CreatedAt`, `CreatedBy`) 
         VALUES (DEFAULT,'$fname', '$lname', '$email', '$username', '$password', CURRENT_TIMESTAMP, '$userid')";
@@ -89,19 +89,19 @@ class UsersData
         }
     }
 
-    //updating
+    // U P D A T I N G
 
     public static function UpdateUser($updateUser)
     {
         $db = Database::getInstance()->getConnection();
 
-        $id = $updateUser->UsersId;
-        $fname = $updateUser->FirstName;
-        $lname = $updateUser->LastName;
-        $email = $updateUser->Email;
-        $password = $updateUser->Password;
-        $username = $updateUser->Username;
-        $userid = $updateUser->UpdatedBy;
+        $id = mysqli_escape_string($db, $updateUser->UsersId);
+        $fname = mysqli_escape_string($db, $updateUser->FirstName);
+        $lname = mysqli_escape_string($db, $updateUser->LastName);
+        $email = mysqli_escape_string($db, $updateUser->Email);
+        $password = mysqli_escape_string($db, $updateUser->Password);
+        $username = mysqli_escape_string($db, mysqli_escape_string($db, $updateUser->Username));
+        $userid = mysqli_escape_string($db, $updateUser->UpdatedBy);
 
         $query = "UPDATE users SET FirstName='$fname', LastName='$lname', Email='$email', Username='$username', Password='$password', UpdatedAt= CURRENT_TIMESTAMP, UpdatedBy='$userid' WHERE UsersId='$id'";
 
@@ -115,15 +115,15 @@ class UsersData
 
 
 
-    // deleting
+    // D E L E T I N G
 
 
     public static function DeleteUser($data)
     {
         $db = Database::getInstance()->getConnection();
 
-        $id=$data->Id;
-        $userid=$data->DeletedBy;
+        $id = mysqli_escape_string($db, $data->Id);
+        $userid = mysqli_escape_string($db, $data->DeletedBy);
 
         $query = "UPDATE users SET isDeleted='1', DeletedAt=CURRENT_TIMESTAMP, DeletedBy='$userid', WHERE UsersId='$id'";
 
@@ -135,13 +135,4 @@ class UsersData
         }
     }
 
-
-// sanit
-    public static function sanit($x){
-
-        $y = htmlspecialchars(strip_tags($x)); 
-        $y = str_replace(' ', '', $y);
-        return $y;
-
-    }
 }

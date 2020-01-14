@@ -68,9 +68,9 @@ class SalesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $name = $newSale->SalesName;
-        $date = $newSale->Date;
-        $userid = $newSale->CreatedBy;
+        $name = mysqli_real_escape_string($db, $newSale->SalesName);
+        $date = mysqli_real_escape_string($db, $newSale->Date);
+        $userid = mysqli_real_escape_string($db, $newSale->CreatedBy);
 
         $query = "INSERT INTO sales (`SalesId`, `SalesName`, `Date`, `CreatedAt`, `CreatedBy`) 
         VALUES (DEFAULT,'$name', '$date', CURRENT_TIMESTAMP , '$userid')";
@@ -88,10 +88,10 @@ class SalesData
     public static function UpdateSale($sale)
     {
         $db = Database::getInstance()->getConnection();
-        $id = $sale->SalesId;
-        $name = $sale->SalesName;
-        $date = $sale->Date;
-        $userid = $sale->UpdatedBy;
+        $id = mysqli_real_escape_string($db, $sale->SalesId);
+        $name = mysqli_real_escape_string($db, $sale->SalesName);
+        $date = mysqli_real_escape_string($db, $sale->Date);
+        $userid = mysqli_real_escape_string($db, $sale->UpdatedBy);
 
         $query = "UPDATE sales SET SalesName='$name', Date='$date', UpdatedBy='$userid', UpdatedAt=CURRENT_TIMESTAMP  WHERE SalesId='$id'";
 
@@ -108,8 +108,8 @@ class SalesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $userid = $sale->DeletedBy;
-        $id = $sale->SalesId;
+        $userid = mysqli_real_escape_string($db, $sale->DeletedBy);
+        $id = mysqli_real_escape_string($db, $sale->SalesId);
         $query = "UPDATE sales SET isDeleted='1', DeletedBy='$userid', DeletedAt=CURRENT_TIMESTAMP WHERE SalesId='$id'";
 
         $result = mysqli_query($db, $query);

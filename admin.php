@@ -177,7 +177,7 @@ if (!isset($_SESSION['username'])) {
                         </div>
                         <div class="form-group">
                             <label for="passcode">Passcode</label>
-                            <input class="form-control" type="password" id="passcode" name="Passcode" placeholder="Passcode" required>
+                            <input class="form-control" type="password" id="passcode" name="Passcode" placeholder="Passcode" pattern="([A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]*" required>
                         </div>
                         <div class="form-group">
                             <label for="imgUrl">Image Url:</label>
@@ -219,7 +219,7 @@ if (!isset($_SESSION['username'])) {
                         </div>
                         <div class="form-group">
                             <label for="updatePasscode">Passcode:</label>
-                            <input class="form-control" type="password" id="updatePasscode" name="updatePasscode" required>
+                            <input class="form-control" type="password" id="updatePasscode" name="updatePasscode" pattern="([A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]*" required>
                         </div>
                         <div class="form-group">
                             <label for="updateImgUrl">Image Url:</label>
@@ -446,7 +446,6 @@ if (!isset($_SESSION['username'])) {
                     <form id="items">
                     </form>
                     <button id="addItemsBtn" type="submit" class="btn btn-info">Submit</button>
-
                 </div>
             </div>
         </div>

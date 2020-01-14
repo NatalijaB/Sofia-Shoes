@@ -26,23 +26,32 @@ $(document).ready(() => {
 
     // A D D I N G 
 
-    $('#addSalesBtn').on('click', () => {
-        let serverUrl = urlSales;
-        let name = $('#sname');
-        let date = $('#date');
-        let data = {
-            'SalesName': name.val().trim(),
-            'Date': date.val(),
-            'CreatedBy': userid,
-        };
-        ajaxPostSales(serverUrl, data);
-        console.log(data);
-        $('.addSales').hide();
+    $("#salesFormAdd").validate({
+        rules: {
+            sname: "required",
+            date: "required"
+        },
+        messages: {
+            sname: "Please enter name of the sale",
+            date: "Please choose a date for a sale"
+        },
+        submitHandler: function (form) {
+            form.submit();
+            let name = $('#sname');
+            let date = $('#date');
+            let data = {
+                'SalesName': name.val().trim(),
+                'Date': date.val(),
+                'CreatedBy': userid,
+            };
+            ajaxPostSales(urlSales, data);
+            console.log(data);
+            $('.addSales').hide();
+        }
     });
 
 
     // U P D A T I N G
-
 
     let salesId;
     $(document).on('click', '.sales-edit', function () {
@@ -54,22 +63,33 @@ $(document).ready(() => {
         $('.updateSales').show();
     });
 
-    $('#updateSalesBtn').off('click').on('click', () => {
+    $("#salesFormUpdate").validate({
+        rules: {
+            updateSname: "required",
+            updateDate: "required"
+        },
+        messages: {
+            updateSname: "Please enter name of the sale",
+            updateDate: "Please choose a date for a sale"
+        },
+        submitHandler: function (form) {
+            form.submit();
 
-        salesId = window.localStorage.getItem('salesId');
-        let serverUrl = `${urlSales}/${salesId}`;
-        let updateName = $('#updatesName');
-        let updateDate = $('#updateDate');
-        let data = {
-            'SalesName': updateName.val().trim(),
-            'Date': updateDate.val(),
-            'SalesId': salesId,
-            'UpdatedBy': userid,
-        };
-        ajaxPostSales(serverUrl, data);
-        console.log(data);
-        $('.updateSales').hide();
-    })
+            salesId = window.localStorage.getItem('salesId');
+            let serverUrl = `${urlSales}/${salesId}`;
+            let updateName = $('#updatesName');
+            let updateDate = $('#updateDate');
+            let data = {
+                'SalesName': updateName.val().trim(),
+                'Date': updateDate.val(),
+                'SalesId': salesId,
+                'UpdatedBy': userid,
+            };
+            ajaxPostSales(serverUrl, data);
+            console.log(data);
+            $('.updateSales').hide();
+        }
+    });
 
 
     // D E L E T I N G 
@@ -116,7 +136,7 @@ $(document).ready(() => {
                     })
                 }
             }
-            
+
             ajaxShoesOnSale(data)
             console.log(data)
             $('.addItems').hide();
@@ -193,7 +213,7 @@ function ajaxDelSales(url, data) {
     })
 }
 
-function ajaxShoesOnSale(data){
+function ajaxShoesOnSale(data) {
     $.ajax({
         type: 'POST',
         url: '/sofia-shoes/shoesonsale',

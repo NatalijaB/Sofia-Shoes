@@ -29,7 +29,7 @@ $(document).ready(() => {
             name: "required",
         },
         messages: {
-            firstname: "Please enter name of the category",
+            name: "Please enter name of the category",
         },
         submitHandler: function (form) {
             form.submit();

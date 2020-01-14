@@ -24,27 +24,48 @@ $(document).ready(() => {
 
     // A D D I N G 
 
-    $('#addShoesBtn').on('click', () => {
-        let name = $('#shoesName');
-        let description = $('#description');
-        let price = $('#price');
-        let size = $('#size');
-        let passcode = $('#passcode');
-        let imgUrl = $('#imgUrl');
-        let category = $('#catOptions :selected');
-        let data = {
-            'ShoesName': name.val().trim(),
-            'Description': description.val().trim(),
-            'Price': price.val().trim(),
-            'Size': size.val().trim(),
-            'Passcode': passcode.val().trim(),
-            'ImgUrl': imgUrl.val().trim(),
-            'Category': category.val(),
-            'CreatedBy': userid,
-        };
-        ajaxPostShoes(urlShoes, data);
-        console.log(data);
-        $('.addShoes').hide();
+    $("#shoesFormAdd").validate({
+        rules: {
+            shoesName: "required",
+            description: "required",
+            price: "required",
+            size: "required",
+            passcode: "required",
+            imgUrl: "required",
+            category: "required",
+        },
+        messages: {
+            shoesName: "Please enter name of the category",
+            description: "Please write a description",
+            price: "Please enter a price",
+            size: "Please enter a size",
+            passcode: "Please enter a passcode",
+            imgUrl: "Please provide a image url",
+            category: "Please choose a category",
+        },
+        submitHandler: function (form) {
+            form.submit();
+            let name = $('#shoesName');
+            let description = $('#description');
+            let price = $('#price');
+            let size = $('#size');
+            let passcode = $('#passcode');
+            let imgUrl = $('#imgUrl');
+            let category = $('#catOptions :selected');
+            let data = {
+                'ShoesName': name.val().trim(),
+                'Description': description.val().trim(),
+                'Price': price.val().trim(),
+                'Size': size.val().trim(),
+                'Passcode': passcode.val().trim(),
+                'ImgUrl': imgUrl.val().trim(),
+                'Category': category.val(),
+                'CreatedBy': userid,
+            };
+            ajaxPostShoes(urlShoes, data);
+            console.log(data);
+            $('.addShoes').hide();
+        }
     });
 
 
@@ -57,33 +78,53 @@ $(document).ready(() => {
         ajaxGetShoes(shoesId);
         $('.updateShoes').show();
 
-
-        $('#updateShoesBtn').off('click').on('click' ,() => {
-            shoesId = window.localStorage.getItem('shoesId');
-            let serverUrl = `${urlShoes}/${shoesId}`;
-
-            let updateShoesName = $('#updateShoesName');
-            let updateDescription = $('#updateDescription');
-            let updatePrice = $('#updatePrice');
-            let updateSize = $('#updateSize');
-            let updatePasscode = $('#updatePasscode');
-            let updateImgUrl = $('#updateImgUrl');
-            let updateCategory = $('#updateCatOptions :selected');
-            let data = {
-                'ShoesId': shoesId,
-                'ShoesName': updateShoesName.val().trim(),
-                'Description': updateDescription.val().trim(),
-                'Price': updatePrice.val().trim(),
-                'Size': updateSize.val().trim(),
-                'Passcode': updatePasscode.val().trim(),
-                'ImgUrl': updateImgUrl.val().trim(),
-                'Category': updateCategory.val(),
-                'UpdatedBy': userid,
-            };
-            ajaxPostShoes(serverUrl, data);
-            console.log(data)
-            $('.updateShoes').hide();
-        })
+        $("#shoesFormAUpdate").validate({
+            rules: {
+                updateShoesName: "required",
+                updateDescription: "required",
+                updatePrice: "required",
+                updateSize: "required",
+                updatePasscode: "required",
+                updateImgUrl: "required",
+                updateCategory: "required",
+            },
+            messages: {
+                updateShoesName: "Please enter name of the category",
+                updateDescription: "Please write a description",
+                updatePrice: "Please enter a price",
+                updateSize: "Please enter a size",
+                updatePasscode: "Please enter a passcode",
+                updateImgUrl: "Please provide a image url",
+                updateCategory: "Please choose a category",
+            },
+            submitHandler: function (form) {
+                form.submit();
+                shoesId = window.localStorage.getItem('shoesId');
+                let serverUrl = `${urlShoes}/${shoesId}`;
+    
+                let updateShoesName = $('#updateShoesName');
+                let updateDescription = $('#updateDescription');
+                let updatePrice = $('#updatePrice');
+                let updateSize = $('#updateSize');
+                let updatePasscode = $('#updatePasscode');
+                let updateImgUrl = $('#updateImgUrl');
+                let updateCategory = $('#updateCatOptions :selected');
+                let data = {
+                    'ShoesId': shoesId,
+                    'ShoesName': updateShoesName.val().trim(),
+                    'Description': updateDescription.val().trim(),
+                    'Price': updatePrice.val().trim(),
+                    'Size': updateSize.val().trim(),
+                    'Passcode': updatePasscode.val().trim(),
+                    'ImgUrl': updateImgUrl.val().trim(),
+                    'Category': updateCategory.val(),
+                    'UpdatedBy': userid,
+                };
+                ajaxPostShoes(serverUrl, data);
+                console.log(data)
+                $('.updateShoes').hide();
+            }
+        });
     });
 
     //D E L E T I N G 

@@ -66,8 +66,8 @@ class CategoriesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $name = $newCategory->CatName;
-        $userid = $newCategory->CreatedBy;
+        $name = mysqli_real_escape_string($db, $newCategory->CatName);
+        $userid =mysqli_real_escape_string($db, $newCategory->CreatedBy);
 
         $query = "INSERT INTO categories (`CatId`, `CatName`, `CreatedAt`, `CreatedBy`) 
         VALUES (DEFAULT,'$name', CURRENT_TIMESTAMP , '$userid')";
@@ -85,9 +85,9 @@ class CategoriesData
     public static function UpdateCategory($category)
     {
         $db = Database::getInstance()->getConnection();
-        $id = $category->CatId;
-        $name = $category->CatName;
-        $userid = $category->UpdatedBy;
+        $id = mysqli_real_escape_string($db, $category->CatId);
+        $name = mysqli_real_escape_string($db, $category->CatName);
+        $userid = mysqli_real_escape_string($db, $category->UpdatedBy);
 
         $query = "UPDATE categories SET CatName='$name', UpdatedBy='$userid', UpdatedAt=CURRENT_TIMESTAMP  WHERE CatId='$id'";
 
@@ -104,8 +104,8 @@ class CategoriesData
     {
         $db = Database::getInstance()->getConnection();
 
-        $userid = $category->DeletedBy;
-        $id = $category->CatId;
+        $userid = mysqli_real_escape_string($db, $category->DeletedBy);
+        $id = mysqli_real_escape_string($db, $category->CatId);
         $query = "UPDATE categories SET isDeleted='1', DeletedBy='$userid', DeletedAt=CURRENT_TIMESTAMP WHERE CatId='$id'";
 
         $result = mysqli_query($db, $query);
