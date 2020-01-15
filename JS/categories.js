@@ -139,6 +139,7 @@ function ajaxGetAllCat() {
                 $('#catTableBody').append(tableContent);
                 $('#updateCatOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
                 $('#catOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
+                $('#catF').append($('<option>', { value: e.CatId, text: e.CatName }));
             });
             $('#catTable').DataTable();
         }

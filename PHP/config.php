@@ -2,9 +2,8 @@
 ob_start();
 session_start();
 
-// obrisati?
 $timezone = date_default_timezone_set("Europe/Belgrade");
-    //konekcija sa bazom
+
     $con = mysqli_connect("localhost", "root", "", "butikProba");
     if (mysqli_connect_errno()) {
         echo "Failed to connect: " . mysqli_connect_errno();
@@ -50,5 +49,3 @@ class Database {
 		return $this->con;
 	}
 }
-
-?>

@@ -6,7 +6,7 @@
 
 body {
     background-color: antiquewhite;
-    font-family: Megrim, sans-serif;
+    font-family: Raleway, sans-serif;
 }
 
 
@@ -15,6 +15,7 @@ body {
 nav {
     background-color: #F47A65 !important;
     box-shadow: 0px 7px 22px 1px rgba(244, 123, 101, 0.83);
+    font-family: Megrim, sans-serif;
 }
 
 .navbar .nav-item {
@@ -46,6 +47,11 @@ nav {
 h1 {
     text-align: center;
     color: rgba(244, 123, 101, 0.83);
+    margin-top: 10px;
+}
+
+h3 {
+    color: rgba(244, 123, 101, 0.83);
 }
 
 
@@ -61,10 +67,6 @@ h1 {
     height: 300px;
     width: 100%;
     object-fit: contain;
-}
-
-.card-body {
-    font-family: Raleway, sans-serif;
 }
 
 .card .btn {

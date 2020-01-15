@@ -101,7 +101,7 @@ $(document).ready(() => {
                 form.submit();
                 shoesId = window.localStorage.getItem('shoesId');
                 let serverUrl = `${urlShoes}/${shoesId}`;
-    
+
                 let updateShoesName = $('#updateShoesName');
                 let updateDescription = $('#updateDescription');
                 let updatePrice = $('#updatePrice');
@@ -139,7 +139,7 @@ $(document).ready(() => {
         shoesId = window.localStorage.getItem('shoesId');
         let serverUrl = `${urlShoes}/${shoesId}`;
         let data = {
-            'Id' : shoesId,
+            'Id': shoesId,
             'DeletedBy': userid,
         }
         deleteData(serverUrl, data);
@@ -161,7 +161,7 @@ function ajaxGetAllShoes() {
                 let tableContent = createShoes(e.ShoesName, e.Description, e.Price, e.Size, e.CategoryName, e.ShoesId, e.cUsername, e.cDate, e.uDate, e.uUsername);
                 $('#shoesTableBody').append(tableContent);
 
-                let formContent = itemsForSale(e.ShoesId, e.ShoesName,)
+                let formContent = itemsForSale(e.ShoesId, e.ShoesName)
                 $('#items').append(formContent);
             });
             $('#shoesTable').DataTable();
@@ -214,9 +214,9 @@ function createShoes(name, description, price, size, categoryName, id, cUsername
     return shoes;
 }
 
-function itemsForSale(id, name){
-    let shoes = 
-    `
+function itemsForSale(id, name) {
+    let shoes =
+        `
     <div class="form-group">
         <label for="${name}">${name}</label>
         <input class="form-control" type="checkbox" name="items" value="${id}"">

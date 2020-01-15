@@ -133,7 +133,7 @@ $(document).ready(() => {
 
         $('#addItemsBtn').off('click').on('click', () => {
             let serverUrl = '/sofia-shoes/shoesonsale';
-            let form = document.forms[8];
+            let form = document.forms[6];
             let data = [];
 
             for (let i = 0; i < form.length; i++) {

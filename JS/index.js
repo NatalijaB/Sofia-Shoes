@@ -2,6 +2,7 @@ const url = '/sofia-shoes/shoes';
 
 $(document).ready(() => {
     getShoes(url);
+
 });
 
 
@@ -12,28 +13,11 @@ function getShoes(url) {
             let shoes = resp;
             shoes.forEach(e => {
                 let cardContent = createShoes(e.ShoesName, e.Price, e.Size, e.Description, e.ImgUrl);
-                $('.row').append(cardContent);
+                $('#shoes').append(cardContent).hide().fadeIn(1000);
+                $('#nameF').append($('<option>', { value: e.ShoesId, text: e.ShoesName }));
             });
         }
     });
 }
 
-function createShoes(name, price, size, description, imgUrl) {
-    let shoes = `
-    <div class="col-lg-4">
-                <div class="card">
-                    <img class="card-img-top" src="${imgUrl}" alt="cardImg">
-                    <div class="card-body">
-                        <h5 class="card-title">${name}</h5>
-                        <p class="card-text">${description}</p>
-                        <p class="card-text">
-                        Price: <span id="price">$${price}</span>
-                        Size: <span id="size">${size}</span>
-                        </p>
-                        
-                    </div>
-                </div>
-            </div>
-    `
-    return shoes;
-}
+
