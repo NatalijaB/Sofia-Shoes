@@ -1,7 +1,7 @@
 <section id="categories">
         <div class="container m-auto p-5 myTable">
             <h1>Categories:</h1>
-            <table id="catTable">
+            <table id="catTable" class="cell-border stripe order-column hover">
                 <thead>
                     <tr>
                         <th>Category Name</th>

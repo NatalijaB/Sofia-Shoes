@@ -45,7 +45,7 @@ if (!isset($_SESSION['username'])) {
             <div class="col-lg-4 offset-4" id="sales">
             </div>
         </div>
-        <div class="row" id="shoes">
+        <div class="row mt-2" id="shoes">
         </div>
     </section>
 

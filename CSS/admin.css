@@ -34,7 +34,7 @@ h1,
 h2,
 h4 {
     text-align: center;
-    color: rgba(244, 123, 101, 0.83);
+    color: rgba(244, 123, 101, 0.83) !important;
 }
 
 section {
@@ -47,12 +47,11 @@ section:nth-child(odd) {
 }
 
 .fa {
-    transition: all ease-in 200ms;
     opacity: 0.8;
 }
 
 .fa:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     opacity: 1;
     cursor: pointer;
 }

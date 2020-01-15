@@ -42,36 +42,6 @@ require_once 'PHP/config.php';
 
     <section class="container">
         <h1>Featured:</h1>
-        <h3>Filter by:</h3>
-        <div class="row">
-            <div class="col-lg-4">
-                <form>
-                    <div class="form-group">
-                        <label for="catF" class="text-muted">Category:</label>
-                        <select class="form-control" name="Category" id="catF">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-4">
-                <form>
-                    <div class="form-group">
-                        <label for="nameF" class="text-muted">Name:</label>
-                        <select class="form-control" name="Name" id="nameF">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-4">
-                <!-- <h3>Price</h3>
-                <input type="hidden" id="hidden_minimum_price" value="0" />
-                <input type="hidden" id="hidden_maximum_price" value="65000" />
-                <p id="priceShow">1000 - 65000</p>
-                <div id="priceRange"></div> -->
-            </div>
-        </div>
         <div class="row" id="shoes">
         </div>
     </section>

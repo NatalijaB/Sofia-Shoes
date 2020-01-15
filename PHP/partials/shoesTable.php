@@ -1,7 +1,7 @@
 <section id="shoes">
         <div class="container m-auto p-5 myTable">
             <h1>Shoes:</h1>
-            <table id="shoesTable">
+            <table id="shoesTable" class="cell-border stripe order-column hover">
                 <thead>
                     <tr>
                         <th>Name</th>
