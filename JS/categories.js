@@ -38,7 +38,7 @@ $(document).ready(() => {
                 'CatName': name.val().trim(),
                 'CreatedBy': userid,
             };
-            post(urlCat, data);
+            postData(urlCat, data);
             $('.addCat').hide();
         }
     });
@@ -91,7 +91,7 @@ $(document).ready(() => {
 
         window.localStorage.setItem('catId', this.dataset.id);
         catId = window.localStorage.getItem('catId');
-        
+
         $('.delCat').show();
     });
 
@@ -141,7 +141,42 @@ function ajaxGetAllCat() {
                 $('#catOptions').append($('<option>', { value: e.CatId, text: e.CatName }));
                 $('#catF').append($('<option>', { value: e.CatId, text: e.CatName }));
             });
-            $('#catTable').DataTable();
+            let buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, column) {
+                            return column === 7 ?
+                                data.replace(/[$,]/g, '') :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#catTable').DataTable(
+                {
+                    columns: [
+                        { data: 'CategoryName' },
+                        { data: 'CreatedBy' },
+                        { data: 'CreatedAt' },
+                        { data: 'UpdatedBy' },
+                        { data: 'UpdatedAt' },
+                        null,
+                        null
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'copyHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'excelHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'pdfHtml5'
+                        })
+                    ]
+                }
+            );
         }
     });
 }

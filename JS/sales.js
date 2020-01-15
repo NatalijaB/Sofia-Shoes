@@ -183,7 +183,45 @@ function ajaxGetAllSales() {
                 let tableContent = createSales(e.SalesName, e.StartDate, e.EndDate, e.SalesId, e.cUsername, e.cDate, e.uUsername, e.uDate);
                 $('#salesTableBody').append(tableContent);
             });
-            $('#salesTable').DataTable();
+            let buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, column) {
+                            return column === 10 ?
+                                data.replace(/[$,]/g, '') :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#salesTable').DataTable(
+                {
+                    columns: [
+                        { data: 'Name' },
+                        { data: 'StartDate' },
+                        { data: 'EndDate' },
+                        { data: 'CreatedBy' },
+                        { data: 'CreatedAt' },
+                        { data: 'UpdatedBy' },
+                        { data: 'UpdatedAt' },
+                        { data: 'AddProducts' },
+                        null,
+                        null
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'copyHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'excelHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'pdfHtml5'
+                        })
+                    ]
+                }
+            );
         }
     });
 }

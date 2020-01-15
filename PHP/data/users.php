@@ -135,4 +135,43 @@ class UsersData
         }
     }
 
+    // C H E C K I N G   U S E R N A M E
+
+    public static function CheckUsername($username)
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $query = "SELECT Username FROM users WHERE UserName = '$username'";
+
+        $usernameCheck = mysqli_query($db, $query);
+        return $usernameCheck;
+    }
+
+     // C H E C K I N G   E M A I L
+
+    public static function CheckEmail($em)
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $query = "SELECT Email FROM users WHERE Email ='$em'";
+
+        $emCheck = mysqli_query($db, $query);
+        $num_rows = mysqli_num_rows($emCheck);
+
+        if ($num_rows > 0) {
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    // S A N I T 
+
+    public static function sanit($x){
+
+        $y = htmlspecialchars(strip_tags($x));
+        $y = str_replace(' ', '', $y);
+        return $y;
+
+    }
 }

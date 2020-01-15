@@ -55,7 +55,7 @@
     
     section {
         width: 100%;
-        max-height: 100vh;
+        max-height: 200vh;
     }
     
     section:nth-child(odd) {
@@ -108,4 +108,9 @@
         background-color: rgb(150, 18, 18);
         border: none;
         font-size: 1.3em;
+    }
+    
+    .error {
+        color: red;
+        padding: 5px;
     }

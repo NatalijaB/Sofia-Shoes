@@ -78,7 +78,7 @@ $(document).ready(() => {
         ajaxGetShoes(shoesId);
         $('.updateShoes').show();
 
-        $("#shoesFormAUpdate").validate({
+        $("#shoesFormUpdate").validate({
             rules: {
                 updateShoesName: "required",
                 updateDescription: "required",
@@ -164,7 +164,46 @@ function ajaxGetAllShoes() {
                 let formContent = itemsForSale(e.ShoesId, e.ShoesName)
                 $('#items').append(formContent);
             });
-            $('#shoesTable').DataTable();
+            let buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, column) {
+                            return column === 11 ?
+                                data.replace(/[$,]/g, '') :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#shoesTable').DataTable(
+                                {
+                    columns: [
+                        { data: 'Name' },
+                        { data: 'Description' },
+                        { data: 'Price' },
+                        { data: 'Size' },
+                        { data: 'Category' },
+                        { data: 'CreatedBy' },
+                        { data: 'CreatedAt' },
+                        { data: 'UpdatedBy' },
+                        { data: 'UpdatedAt' },
+                        null,
+                        null
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'copyHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'excelHtml5'
+                        }),
+                        $.extend(true, {}, buttonCommon, {
+                            extend: 'pdfHtml5'
+                        })
+                    ]
+                }
+            );
         }
     });
 }

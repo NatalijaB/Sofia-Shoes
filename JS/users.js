@@ -172,8 +172,43 @@ function ajaxGetAllUsers() {
             users.forEach(e => {
                 let tableContent = createUsers(e.FirstName, e.LastName, e.Username, e.UsersId, e.cUsername, e.cDate, e.uUsername, e.uDate);
                 $('#usersTableBody').append(tableContent);
+            }); 
+            let buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, column) {
+                            return column === 9 ?
+                                data.replace(/[$,]/g, '') :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#usersTable').DataTable({
+                columns: [
+                    { data: 'FirstName' },
+                    { data: 'LastName' },
+                    { data: 'Username' },
+                    { data: 'CreatedBy' },
+                    { data: 'CreatedAt' },
+                    { data: 'UpdatedBy' },
+                    { data: 'UpdatedAt' },
+                    null,
+                    null
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    $.extend(true, {}, buttonCommon, {
+                        extend: 'copyHtml5'
+                    }),
+                    $.extend(true, {}, buttonCommon, {
+                        extend: 'excelHtml5'
+                    }),
+                    $.extend(true, {}, buttonCommon, {
+                        extend: 'pdfHtml5'
+                    })
+                ]
             });
-            $('#usersTable').DataTable();
         }
     });
 }
