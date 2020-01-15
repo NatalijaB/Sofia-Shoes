@@ -6,6 +6,7 @@ $(document).ready(() => {
     ajaxGetAllShoes();
 
 
+
     // FORM DISPLAY (srediti)
 
     $('#addShoes').click(() => {
@@ -176,7 +177,7 @@ function ajaxGetAllShoes() {
                 }
             };
             $('#shoesTable').DataTable(
-                                {
+                {
                     columns: [
                         { data: 'Name' },
                         { data: 'Description' },
@@ -255,11 +256,13 @@ function createShoes(name, description, price, size, categoryName, id, cUsername
 
 function itemsForSale(id, name) {
     let shoes =
-        `
-    <div class="form-group">
-        <label for="${name}">${name}</label>
-        <input class="form-control" type="checkbox" name="items" value="${id}"">
-    </div>`
+    `<div clas="col-auto">
+    <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" name="items" value="${id}">
+    <label class="form-check-label" for="${name}">${name}
+    </label>
+        </div>
+        </div>`
 
     return shoes;
 }
