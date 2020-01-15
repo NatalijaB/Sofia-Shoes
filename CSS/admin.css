@@ -114,3 +114,15 @@
         color: red;
         padding: 5px;
     }
+    
+    #items {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 30vh;
+    }
+    
+    .form-check {
+        font-size: 1.2rem;
+    }

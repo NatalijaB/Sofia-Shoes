@@ -256,13 +256,13 @@ function createShoes(name, description, price, size, categoryName, id, cUsername
 
 function itemsForSale(id, name) {
     let shoes =
+
     `<div clas="col-auto">
-    <div class="form-check mb-2">
-    <input class="form-check-input" type="checkbox" name="items" value="${id}">
-    <label class="form-check-label" for="${name}">${name}
-    </label>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" name="items" value="${id}">
+            <label class="form-check-label" for="${name}">${name}</label>
         </div>
-        </div>`
+    </div>`
 
     return shoes;
 }

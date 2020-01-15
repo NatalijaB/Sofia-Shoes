@@ -94,7 +94,7 @@
                 </button>
                 <h2>Choose shoes for sale:</h2>
                 <form id="items">
-                    <div class="form-row align-items-center">
+                    <div class="form-row">
                     </div>
                 </form>
                 <button id="addItemsBtn" type="submit" class="btn btn-info">Submit</button>
